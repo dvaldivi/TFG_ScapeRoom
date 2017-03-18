@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public float sensitivityY;
     private float rotationZ;
 
-    private GameObject cubo;
+    private GameObject interactuable;
     private bool seleccionado;
     private float tiempo;
     public HandModel Mano_izq;
@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
     public void reset()
     {
         viendo_solucion = false;
-        cubo = null;
+        interactuable = null;
 
     }
     public void juego()
@@ -147,14 +147,14 @@ public class PlayerController : MonoBehaviour
                 {
                     /*si lo que estoy tocando es un cubo y es distinto al ultimo cubo que toque, 
                      esto sirve para que resalte el cubo que puede coger */
-                    if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject != cubo)
+                    if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject != interactuable)
                     {
-                        if (cubo != null)
+                        if (interactuable != null)
                         {
-                            if (cubo.GetComponent<cubo>())
-                                cubo.GetComponent<cubo>().unhover();
-                            else if (cubo.GetComponent<cubo_recoger>())
-                                cubo.GetComponent<cubo_recoger>().unhover();
+                            if (interactuable.GetComponent<cubo>())
+                                interactuable.GetComponent<cubo>().unhover();
+                            else if (interactuable.GetComponent<cubo_recoger>())
+                                interactuable.GetComponent<cubo_recoger>().unhover();
 
 
                         }
@@ -171,9 +171,9 @@ public class PlayerController : MonoBehaviour
                             viendo_solucion = true;
 
                         }
-                        cubo = hit.collider.gameObject;
+                        interactuable = hit.collider.gameObject;
                     }
-                    else if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject == cubo)
+                    else if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject == interactuable)
                     {
                         /*seleccionar un cubo para moverlo en el tablero*/
                         if (leap_hand_drcha.PinchStrength > 0.5 && tiempo > 1f)
@@ -181,43 +181,43 @@ public class PlayerController : MonoBehaviour
                             tiempo = 0;
 
                             seleccionado = true;
-                            if (cubo.GetComponent<cubo>())
-                                cubo.GetComponent<cubo>().coge();
-                            else if (cubo.GetComponent<cubo_recoger>())
-                                cubo.GetComponent<cubo_recoger>().coge(this.transform);
+                            if (interactuable.GetComponent<cubo>())
+                                interactuable.GetComponent<cubo>().coge();
+                            else if (interactuable.GetComponent<cubo_recoger>())
+                                interactuable.GetComponent<cubo_recoger>().coge(this.transform);
 
 
 
                         }
                     }
                     /*si pasa por un sitio que no sea cubo, quitar resalto*/
-                    else if (cubo != null)
+                    else if (interactuable != null)
                     {
-                        if (cubo.GetComponent<cubo>())
-                            cubo.GetComponent<cubo>().unhover();
-                        else if (cubo.GetComponent<cubo_recoger>())
-                            cubo.GetComponent<cubo_recoger>().unhover();
+                        if (interactuable.GetComponent<cubo>())
+                            interactuable.GetComponent<cubo>().unhover();
+                        else if (interactuable.GetComponent<cubo_recoger>())
+                            interactuable.GetComponent<cubo_recoger>().unhover();
                         else
-                            cubo.GetComponent<darvuelta>().unhover();
-                        cubo = null;
+                            interactuable.GetComponent<darvuelta>().unhover();
+                        interactuable = null;
                     }
 
                 }
                 /*si tengo uno seleccionado/ recogido*/
                 else
                 {
-                    if (cubo.GetComponent<cubo>())
-                        cubo.GetComponent<cubo>().mueve(hit.point);
-                    else if (cubo.GetComponent<cubo_recoger>())
-                        cubo.GetComponent<cubo_recoger>().mueve(this.transform);
+                    if (interactuable.GetComponent<cubo>())
+                        interactuable.GetComponent<cubo>().mueve(hit.point);
+                    else if (interactuable.GetComponent<cubo_recoger>())
+                        interactuable.GetComponent<cubo_recoger>().mueve(this.transform);
                     
                     if (leap_hand_drcha.PinchStrength < 0.5 && tiempo > 1f)
                     {
-                        if (cubo.GetComponent<cubo>())
-                        cubo.GetComponent<cubo>().suelta();
-                        else if (cubo.GetComponent<cubo_recoger>())
-                            cubo.GetComponent<cubo_recoger>().suelta();
-                        cubo = null;
+                        if (interactuable.GetComponent<cubo>())
+                        interactuable.GetComponent<cubo>().suelta();
+                        else if (interactuable.GetComponent<cubo_recoger>())
+                            interactuable.GetComponent<cubo_recoger>().suelta();
+                        interactuable = null;
                         seleccionado = false;
                         tiempo = 0;
 
@@ -290,37 +290,23 @@ public class PlayerController : MonoBehaviour
             cruceta.transform.rotation = this.transform.rotation;
             if (!seleccionado)
                 {
-                    if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject != cubo && !miefectoFuego.gameObject.activeSelf)
+                    if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject != interactuable && !miefectoFuego.gameObject.activeSelf)
                     {
-                        if (cubo != null)
+                        if (interactuable != null)
                         {
-                            if (cubo.GetComponent<cubo>())
-                                cubo.GetComponent<cubo>().unhover();
-                            else if (cubo.GetComponent<cubo_recoger>())
-                            cubo.GetComponent<cubo_recoger>().unhover();
-                            else if (cubo.GetComponent<Menu_seleccionar>())
-                            cubo.GetComponent<Menu_seleccionar>().unhover();
-
-                    }
-
-                    if (hit.collider.gameObject.GetComponent<cubo>())
-                        hit.collider.gameObject.GetComponent<cubo>().hover();
-                    else if (hit.collider.gameObject.GetComponent<cubo_recoger>())
-                        hit.collider.gameObject.GetComponent<cubo_recoger>().hover();
-                    else if (hit.collider.gameObject.GetComponent<Menu_seleccionar>())
-                        hit.collider.gameObject.GetComponent<Menu_seleccionar>().hover();
-                    else
-                    {
-                            if (hit.collider.gameObject.GetComponent<darvuelta>())
-                                hit.collider.gameObject.GetComponent<darvuelta>().hover();
-                            if (hit.collider.gameObject.GetComponent<Reset>())
-                                hit.collider.gameObject.GetComponent<Reset>().hover();
-                            viendo_solucion = true;
+                        if (interactuable.GetComponent<Interactuable>()) {
+                            interactuable.GetComponent<Interactuable>().unhover();
+                        }
+                            
 
                         }
-                        cubo = hit.collider.gameObject;
+
+                    if (hit.collider.gameObject.GetComponent<Interactuable>())
+                        hit.collider.gameObject.GetComponent<Interactuable>().hover();
+                   
+                        interactuable = hit.collider.gameObject;
                     }
-                    else if (hit.collider.gameObject.tag == "cubo" && hit.collider.gameObject == cubo)
+                    else if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject == interactuable)
                     {
 
                         if (Input.GetButton("Fire1") && tiempo > 1f)
@@ -328,51 +314,33 @@ public class PlayerController : MonoBehaviour
                             tiempo = 0;
 
                             seleccionado = true;
-                        if (cubo.GetComponent<cubo>())
-                            cubo.GetComponent<cubo>().coge();
-                        else if (cubo.GetComponent<cubo_recoger>())
-                            cubo.GetComponent<cubo_recoger>().coge(this.transform);
-                        else if (cubo.GetComponent<Menu_seleccionar>())
-                        {
-                            cubo.GetComponent<Menu_seleccionar>().selecciona();
-                            cubo = null;
-                            seleccionado = false;
-                            tiempo = 0;
-
-                        }
+                        if (interactuable.GetComponent<Interactuable>())
+                            interactuable.GetComponent<Interactuable>().coge(this.transform);
+                       
 
 
                     }
                     }
-                    else if (cubo != null)
+                    else if (interactuable != null)
                     {
-                        if (cubo.GetComponent<cubo>())
-                            cubo.GetComponent<cubo>().unhover();
-                        else if (cubo.GetComponent<cubo_recoger>())
-                            cubo.GetComponent<cubo_recoger>().unhover();
-                        else if (cubo.GetComponent<Menu_seleccionar>())
-                            cubo.GetComponent<Menu_seleccionar>().unhover();
-                        else
-                            cubo.GetComponent<darvuelta>().unhover();
-                        cubo = null;
+                        if (interactuable.GetComponent<Interactuable>())
+                            interactuable.GetComponent<Interactuable>().unhover();
+                        
+                        interactuable = null;
                     }
 
                 }
                 else
                 {
-                if (cubo.GetComponent<cubo>() && (hit.collider.gameObject.tag == "GameController"  || hit.collider.gameObject.tag == "cubo"))
-                    cubo.GetComponent<cubo>().mueve(hit.point);
-                else if (cubo.GetComponent<cubo_recoger>())
-                    cubo.GetComponent<cubo_recoger>().mueve(this.transform);
+                if (interactuable.GetComponent<Interactuable>() && (hit.collider.gameObject.tag == "GameController"  || hit.collider.gameObject.tag == "cubo"))
+                    interactuable.GetComponent<Interactuable>().mueve(hit.point);
+              
                 if (Input.GetButtonUp("Fire1") && tiempo > 1f)
                     {
-                    if(cubo.GetComponent<cubo>())
-                        cubo.GetComponent<cubo>().suelta();
-                    else if (cubo.GetComponent<cubo_recoger>())
-                        cubo.GetComponent<cubo_recoger>().suelta();
-                    else if (cubo.GetComponent<Menu_seleccionar>())
-                        cubo.GetComponent<Menu_seleccionar>().suelta();
-                    cubo = null;
+                    if(interactuable.GetComponent<Interactuable>())
+                        interactuable.GetComponent<Interactuable>().suelta();
+                  
+                    interactuable = null;
                     seleccionado = false;
                     tiempo = 0;
 
@@ -383,6 +351,7 @@ public class PlayerController : MonoBehaviour
 
         
         //mano izq 
+        /*
         posicion_relativa = Vector3.zero;
 
         
@@ -416,7 +385,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-
+    */
         
 
 

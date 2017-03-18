@@ -1,0 +1,38 @@
+Comenzamos encerrados en una mazmorra medieval.
+
+Solo vemos en la celda una nota, que nos avisa que hemos sido encerro por contrabando ilegal y pirateria
+y nuestra condena sera ejecutada este mismo amanecer.
+
+Si vemos la nota a contraluz, descifraremos como salir de nuestra primera celda.
+Nuestro amigo el capitan barbanegra quiere  robar el tesoro del general cara culo,
+En la nota salen numeros los cuales tenemos que pulsar en los ladrillos de la celda los cuales estan numerados con numeros 
+romanos, cuando hagamos la combinacion correcta una parte del muro se ocultara y podremos pasar a la siguiente fase
+
+
+//opcion 1 
+Cuando realizamos las tareas a realizar, una trampilla de nuestra celda en el lateral se abrira y nos dejara pasar a la celda
+contigua, la cual tiene un cadaver una vela y una gotera
+// opcion 2 
+Cuando realizamos las tareas a realizar, una trampilla de nuestra celda en el lateral se abrira y nos dejara pasar a una sala oculta la cual tendra unas escaleras que 
+podremos subir y nos llevara a la sala superior
+contigua, la cual tiene un cadaver con un vaso vacio,al lado de una botella ,  una chimenea , un piano cajon  con una serie de numeros , cada unas cuantas teclas ,
+una ventana cerrada , una gotera ademas  de dos notas , una vacia totalmente y otra con una  nota en la que pone" Si hay magia en este mundo, está contenida en el agua ",y  
+ es la pista necesaria para darse cuenta de que si cogemos el vaso, 
+lo ponemos debajo de la gotera se puede llenar una vez lleno si derramamos su contenido a la segunda nota, esta nos dejara ver una combinacion de numeros 
+esta es la combinacion de teclas que debemos de tocar en el piano para que abra el cajon y podamos recoger la llave que abre la ventana.
+
+
+
+-- chimenea( que tendra tampilla a sala contigua)
+
+
+
+el proceso para pasar a la trampilla superior y llegar al nivel final es recoger agua con el vaso vacio de la gotera 
+
+
+/*IDEAS */
+
+-- PUZZLE CON NUMEROS, UNA VEZ RESUELTO SALE UNA COMBINACION QUE ES LA QUE TENEMOS QUE ITRODUCIR EN UNA TROMPETA_INSTRUMENTO_PIANO
+--LIBROS CON CONTENIDO OCULTO DENTRO
+
+"En los días de lluvia el sol es un intruso imperdonable."
