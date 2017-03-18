@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tfg with tuto", "tfg with tuto.csproj", "{57B1CA2E-5693-890E-AECF-E98BC3C1FEDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tfg with tuto.Editor", "tfg with tuto.Editor.csproj", "{B4D70B69-0C9A-3CB3-59AA-F4CAF5E17A79}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57B1CA2E-5693-890E-AECF-E98BC3C1FEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57B1CA2E-5693-890E-AECF-E98BC3C1FEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57B1CA2E-5693-890E-AECF-E98BC3C1FEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57B1CA2E-5693-890E-AECF-E98BC3C1FEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4D70B69-0C9A-3CB3-59AA-F4CAF5E17A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4D70B69-0C9A-3CB3-59AA-F4CAF5E17A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4D70B69-0C9A-3CB3-59AA-F4CAF5E17A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4D70B69-0C9A-3CB3-59AA-F4CAF5E17A79}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

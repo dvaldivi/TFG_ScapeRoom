@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tfg with rv", "tfg with rv.csproj", "{0E875BE8-650C-2C31-8877-307C3301D196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tfg with rv.Editor", "tfg with rv.Editor.csproj", "{4BE50848-C1EA-60A9-033F-991C2973CB91}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E875BE8-650C-2C31-8877-307C3301D196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E875BE8-650C-2C31-8877-307C3301D196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E875BE8-650C-2C31-8877-307C3301D196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E875BE8-650C-2C31-8877-307C3301D196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BE50848-C1EA-60A9-033F-991C2973CB91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BE50848-C1EA-60A9-033F-991C2973CB91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BE50848-C1EA-60A9-033F-991C2973CB91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BE50848-C1EA-60A9-033F-991C2973CB91}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
