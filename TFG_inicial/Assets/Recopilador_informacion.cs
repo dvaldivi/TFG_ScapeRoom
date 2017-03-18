@@ -25,6 +25,7 @@ public class Recopilador_informacion : MonoBehaviour {
 
     private void anade_objetos()
     {
+        //
         static_objects = new List<GameObject>();
         dinamic_objects = new List<GameObject>();
         Player = GameObject.FindGameObjectWithTag("Player");
