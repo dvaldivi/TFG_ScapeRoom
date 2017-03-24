@@ -135,6 +135,7 @@
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\PolyHand.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedFinger.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedHand.cs" />
+    <Compile Include="Assets\PlayerMueve.cs" />
     <Compile Include="Assets\Recopilador_informacion.cs" />
     <Compile Include="Assets\script\Comunicacion_servidor.cs" />
     <Compile Include="Assets\script\Efecto.cs" />

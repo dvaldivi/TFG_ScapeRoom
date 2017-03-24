@@ -280,6 +280,8 @@ public class PlayerController : MonoBehaviour
         posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
 
 
+        if (interactuable != null && seleccionado && interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Mover_libremente))
+            interactuable.GetComponent<Interactuable>().mueve(this.transform);
 
 
         // if (!viendo_solucion && Physics.Raycast(pos_camara.transform.position + posicion_relativa, transform.forward * 100000, out hit))
@@ -309,13 +311,29 @@ public class PlayerController : MonoBehaviour
                     else if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject == interactuable)
                     {
 
-                        if (Input.GetButton("Fire1") && tiempo > 1f)
-                        {
-                            tiempo = 0;
+                    if (Input.GetButton("Fire1") && tiempo > 1f)
+                    {
+                        tiempo = 0;
 
-                            seleccionado = true;
-                        if (interactuable.GetComponent<Interactuable>())
-                            interactuable.GetComponent<Interactuable>().coge(this.transform);
+                        seleccionado = true;
+                        if (interactuable.GetComponent<Interactuable>()){
+                            if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
+                            {
+
+                                interactuable.GetComponent<Interactuable>().coge(this.transform);
+                            }
+                            else if(!interactuable.GetComponent<Interactuable>().pulsado)
+                            {
+                                interactuable.GetComponent<Interactuable>().coge(this.transform);//es mas un pulsa
+                                
+                                interactuable = null;
+                                seleccionado = false;
+                                tiempo = 0;
+
+                            }
+
+
+                        } 
                        
 
 
@@ -332,9 +350,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                if (interactuable.GetComponent<Interactuable>() && (hit.collider.gameObject.tag == "GameController"  || hit.collider.gameObject.tag == "cubo"))
-                    interactuable.GetComponent<Interactuable>().mueve(hit.point);
-              
+               
                 if (Input.GetButtonUp("Fire1") && tiempo > 1f)
                     {
                     if(interactuable.GetComponent<Interactuable>())
@@ -349,43 +365,7 @@ public class PlayerController : MonoBehaviour
             }
 
 
-        
-        //mano izq 
-        /*
-        posicion_relativa = Vector3.zero;
-
-        
-
-            posicion_relativa = posRelativa_raton(mano_falsa_dcha.transform.position);
-        if(viendo_solucion) miefectoFuego.gameObject.SetActive(false);
-        
-
-            if (!viendo_solucion && Physics.Raycast(pos_camara.transform.position + posicion_relativa, transform.forward * 3000, out hit))
-            {
-               
-            if (Input.GetButton("Fire2"))
-            {
-                miefectoFuego.gameObject.SetActive(true);
-                if (hit.collider.gameObject.tag == "cubo")
-                {
-                    if (hit.collider.gameObject.GetComponent<cubo>())
-                        hit.collider.gameObject.GetComponent<cubo>().visualiza();
-
-
-                }
-            }
-            if (Input.GetButtonUp("Fire2"))
-            {
-                miefectoFuego.gameObject.SetActive(false);
-            }
-            miefectoFuego.transform.position = hit.point - new Vector3(0, 0, 10);
-
-            }
-
-
-
-
-    */
+      
         
 
 
