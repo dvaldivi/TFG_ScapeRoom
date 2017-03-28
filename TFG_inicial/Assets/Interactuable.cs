@@ -18,7 +18,8 @@ public class Interactuable : MonoBehaviour {
     public Material normal;
     public Material rojo;
     private Material mimaterial;
-
+    
+    public char letra = 'a';
     //boton tablero 
     private float original_y;
     private float factor;
@@ -29,12 +30,23 @@ public class Interactuable : MonoBehaviour {
     public bool encima;
     // Use this for initialization
     void Start () {
+        if (letra == ' ') {
+            letra = 'a';
+        }
         valido = false;
         encima = false;
         if (this.GetComponent<Collider>()) {
             valido = true;
             if (mi_tipo.Equals(Tipo_interactuable.Boton)) {
-                this.GetComponent<Rigidbody>().useGravity = false;
+                if (this.GetComponent<Rigidbody>())
+                {
+                    this.GetComponent<Rigidbody>().useGravity = false;
+                }
+                else
+                {
+                    Debug.Log("Rigidbody not attached");
+                }
+               
                 this.GetComponent<Collider>().isTrigger = true;
                 pos_original = this.transform.position;
             }
@@ -217,6 +229,9 @@ public class Interactuable : MonoBehaviour {
 
             this.transform.position = pos_original + desplazamiento;
             tiempo_pulsado_mant = 5;
+            if (this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>()) {
+                this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>().caracter(letra);
+                }
             pulsado = true;
         }
         else if (v.Equals(Funcion.mueve))
@@ -226,7 +241,13 @@ public class Interactuable : MonoBehaviour {
         else if (v.Equals(Funcion.suelta))
         {
             this.transform.position = pos_original ;
-            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            if (this.GetComponent<Rigidbody>())
+            {
+                this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            }
+            else {
+                Debug.Log("Rigidbody not attached");
+            }
             GetComponent<Renderer>().material = normal;
             pulsado = false;
         }
