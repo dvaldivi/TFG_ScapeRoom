@@ -20,9 +20,9 @@ public class botones_padre : MonoBehaviour {
 	void Update () {
         if (activada) {
             Vector3 temp = desplazamiento - original;
-            if (Vector3.Distance(desplazamiento, original) > 1)
+            if (Vector3.Distance(desplazamiento, original) > 0.01f)
             {
-                trampilla.transform.position = trampilla.transform.position + temp / 10;
+                trampilla.transform.position = trampilla.transform.position + temp / 50;
                 original = trampilla.transform.position;
             }
         }
