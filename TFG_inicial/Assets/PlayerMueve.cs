@@ -7,6 +7,7 @@ public class PlayerMueve : MonoBehaviour {
     public  GameObject guia;
     public bool moviendo;
     public float velocidad;
+    
     // Use this for initialization
     void Start () {
         moviendo = false;

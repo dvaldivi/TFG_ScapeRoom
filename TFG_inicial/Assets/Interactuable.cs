@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Interactuable : MonoBehaviour {
-    public bool valido;
+    
     public enum Tipo_interactuable { Mover_tablero, Mover_libremente,Boton,Menu_boton,Moverse};
     public enum Funcion { unhover, hover, coge, mueve,suelta };
     public Tipo_interactuable mi_tipo;
@@ -18,6 +18,7 @@ public class Interactuable : MonoBehaviour {
     public Material normal;
     public Material rojo;
     private Material mimaterial;
+    public bool clave;
     
     public char letra = 'a';
     //boton tablero 
@@ -33,24 +34,29 @@ public class Interactuable : MonoBehaviour {
         if (letra == ' ') {
             letra = 'a';
         }
-        valido = false;
         encima = false;
-        if (this.GetComponent<Collider>()) {
-            valido = true;
-            if (mi_tipo.Equals(Tipo_interactuable.Boton)) {
-                if (this.GetComponent<Rigidbody>())
-                {
-                    this.GetComponent<Rigidbody>().useGravity = false;
-                }
-                else
-                {
-                    Debug.Log("Rigidbody not attached");
-                }
-               
-                this.GetComponent<Collider>().isTrigger = true;
-                pos_original = this.transform.position;
-            }
+        if (!this.GetComponent<Collider>()) {
+            this.gameObject.AddComponent<BoxCollider>();
         }
+        if (!this.GetComponent<Rigidbody>())
+        {
+            this.gameObject.AddComponent<Rigidbody>();
+        }
+        
+        if (mi_tipo.Equals(Tipo_interactuable.Boton)) {
+            if (this.GetComponent<Rigidbody>())
+            {
+                this.GetComponent<Rigidbody>().useGravity = false;
+            }
+            else
+            {
+                Debug.Log("Rigidbody not attached");
+            }
+               
+            this.GetComponent<Collider>().isTrigger = true;
+            pos_original = this.transform.position;
+        }
+        
         factor = 1;
     }
 	
@@ -59,33 +65,33 @@ public class Interactuable : MonoBehaviour {
      * UPDATE
      */
 	void Update () {
-        if (valido) {
-            if (pulsado && tiempo_pulsado_mant >= 0 ) {
-                 tiempo_pulsado_mant -= Time.deltaTime;
-                if (tiempo_pulsado_mant < 0) {
-                    suelta();
-                }
-
+        
+        if (pulsado && tiempo_pulsado_mant >= 0 ) {
+                tiempo_pulsado_mant -= Time.deltaTime;
+            if (tiempo_pulsado_mant < 0) {
+                suelta();
             }
-            if (encima)
-                t_hover++;
-           
-            if (t_hover > 100) {
-                if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().moviendo)
-                {
-                 
-                }
-                else
-                {
-                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().mueveA(this.transform);
-                    t_hover = 0;
-                    Debug.Log(this.name);
-                    encima = false;
-                }
-            }
-
 
         }
+        if (encima)
+            t_hover++;
+           
+        if (t_hover > 100) {
+            if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().moviendo)
+            {
+                 
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().mueveA(this.transform);
+                t_hover = 0;
+                Debug.Log(this.name);
+                encima = false;
+            }
+        }
+
+
+        
 	}
 
     internal void unhover()
@@ -216,12 +222,12 @@ public class Interactuable : MonoBehaviour {
     {
         if (v.Equals(Funcion.hover))
         {
-            if(!pulsado)
+            if(!pulsado && rojo != null)
             GetComponent<Renderer>().material = rojo;
         }
         else if (v.Equals(Funcion.unhover))
         {
-            if (!pulsado)
+            if (!pulsado && normal != null)
                 GetComponent<Renderer>().material = normal;
         }
         else if (v.Equals(Funcion.coge))
@@ -248,6 +254,7 @@ public class Interactuable : MonoBehaviour {
             else {
                 Debug.Log("Rigidbody not attached");
             }
+            if(normal != null)
             GetComponent<Renderer>().material = normal;
             pulsado = false;
         }
@@ -284,6 +291,7 @@ public class Interactuable : MonoBehaviour {
         {
             this.transform.position = pos_original;
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            if(normal != null)
             GetComponent<Renderer>().material = normal;
             pulsado = false;
         }
@@ -298,11 +306,12 @@ public class Interactuable : MonoBehaviour {
     {
         if (v.Equals(Funcion.hover))
         {
+            if(rojo != null)
             GetComponent<Renderer>().material = rojo;
         }
         else if (v.Equals(Funcion.unhover))
         {
-
+            if(normal != null)
             GetComponent<Renderer>().material = normal;
         }
         else if (v.Equals(Funcion.coge))
@@ -338,8 +347,8 @@ public class Interactuable : MonoBehaviour {
         else if (v.Equals(Funcion.suelta))
         {
 
-            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-            GetComponent<Renderer>().material = normal;
+            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None; if (normal != null)
+                GetComponent<Renderer>().material = normal;
             if (mitorre != null)
             {
                 if (Vector3.Distance(this.transform.position, mitorre.transform.position) < 50)
