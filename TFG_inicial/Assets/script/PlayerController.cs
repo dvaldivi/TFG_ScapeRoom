@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     public float sensitivityY;
     private float rotationZ;
 
-    private GameObject interactuable;
-    private bool seleccionado;
+    public  GameObject interactuable;
+    public bool seleccionado;
     private float tiempo;
     public HandModel Mano_izq;
     public Hand leap_hand_izq;
@@ -275,102 +275,157 @@ public class PlayerController : MonoBehaviour
         Vector3 posicion_relativa = Vector3.zero;
 
 
-      //  Debug.DrawRay(transform.position, transform.forward * 3000, Color.red);
+        //  Debug.DrawRay(transform.position, transform.forward * 3000, Color.red);
 
         posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
 
 
         if (interactuable != null && seleccionado && interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Mover_libremente))
+        {
             interactuable.GetComponent<Interactuable>().mueve(this.transform);
 
+            if (Input.GetButtonUp("Fire1") && tiempo > 1f)
+            {
+                if (interactuable.GetComponent<Interactuable>())
+                    interactuable.GetComponent<Interactuable>().suelta();
 
-        // if (!viendo_solucion && Physics.Raycast(pos_camara.transform.position + posicion_relativa, transform.forward * 100000, out hit))
-        if (!viendo_solucion && Physics.Raycast(transform.position, transform.forward * 3000, out hit))
-        {
+                interactuable = null;
+                seleccionado = false;
+                tiempo = 0;
 
-            cruceta.transform.position = hit.point;
-            cruceta.transform.rotation = this.transform.rotation;
-            if (!seleccionado)
-                {
-                    if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject != interactuable && !miefectoFuego.gameObject.activeSelf)
-                    {
-                        if (interactuable != null)
-                        {
-                        if (interactuable.GetComponent<Interactuable>()) {
-                            interactuable.GetComponent<Interactuable>().unhover();
-                        }
-                            
+            }else if (Input.GetButtonUp("Fire2") && tiempo > 1f)
+            {
+                interactuable.GetComponent<Rigidbody>().AddForce(this.transform.forward * 1000);
+                if (interactuable.GetComponent<Interactuable>())
+                    interactuable.GetComponent<Interactuable>().suelta();
 
-                        }
+                interactuable = null;
+                seleccionado = false;
+                tiempo = 0;
 
-                    if (hit.collider.gameObject.GetComponent<Interactuable>())
-                        hit.collider.gameObject.GetComponent<Interactuable>().hover();
-                   
-                        interactuable = hit.collider.gameObject;
-                    }
-                    else if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject == interactuable)
-                    {
-
-                    if (Input.GetButton("Fire1") && tiempo > 1f)
-                    {
-                        tiempo = 0;
-
-                        seleccionado = true;
-                        if (interactuable.GetComponent<Interactuable>()){
-                            if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
-                            {
-
-                                interactuable.GetComponent<Interactuable>().coge(this.transform);
-                            }
-                            else if(!interactuable.GetComponent<Interactuable>().pulsado)
-                            {
-                                interactuable.GetComponent<Interactuable>().coge(this.transform);//es mas un pulsa
-                                
-                                interactuable = null;
-                                seleccionado = false;
-                                tiempo = 0;
-
-                            }
-
-
-                        } 
-                       
-
-
-                    }
-                    }
-                    else if (interactuable != null)
-                    {
-                        if (interactuable.GetComponent<Interactuable>())
-                            interactuable.GetComponent<Interactuable>().unhover();
-                        
-                        interactuable = null;
-                    }
-
-                }
-                else
-                {
-               
-                if (Input.GetButtonUp("Fire1") && tiempo > 1f)
-                    {
-                    if(interactuable.GetComponent<Interactuable>())
-                        interactuable.GetComponent<Interactuable>().suelta();
-                  
-                    interactuable = null;
-                    seleccionado = false;
-                    tiempo = 0;
-
-                    }
-                }
             }
 
+        }
+        else if (!viendo_solucion && Physics.Raycast(transform.position, transform.forward , out hit) && !seleccionado )
+        {
+            
+            cruceta.transform.position = hit.point;
+            cruceta.transform.rotation = this.transform.rotation;
 
-      
-        
+            /**/
+
+            if (interactuable == null)
+            {
+                if (hit.collider.gameObject.GetComponent<Interactuable>())
+                {
+                    Interactuable.Tipo_interactuable temp = hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo;
+                    if (temp.Equals(Interactuable.Tipo_interactuable.Moverse))
+                    {
+                        Debug.Log(Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position));
+                        float temp2 = Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position);
+                        if ( temp2 < 3 && temp2 > 1) {
+                            hit.collider.gameObject.GetComponent<Interactuable>().hover();
+                            interactuable = hit.collider.gameObject;
+
+                        }
+                    }
+                    else
+                    {
+                        hit.collider.gameObject.GetComponent<Interactuable>().hover();
+                        interactuable = hit.collider.gameObject;
+                    }
+
+                }
+            }
+            else if (interactuable != null && hit.collider.gameObject.name != interactuable.gameObject.name)
+            {
+
+                if (interactuable.GetComponent<Interactuable>())
+                {
+                    interactuable.GetComponent<Interactuable>().unhover();
+
+
+                }
+                if (hit.collider.gameObject.GetComponent<Interactuable>())
+                {
+                    Interactuable.Tipo_interactuable temp = hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo;
+                    if (temp.Equals(Interactuable.Tipo_interactuable.Moverse))
+                    {
+                        Debug.Log(Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position));
+                        float temp2 = Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position);
+                        if (temp2 < 3 && temp2 > 1)
+                        {
+                            hit.collider.gameObject.GetComponent<Interactuable>().hover();
+                            interactuable = hit.collider.gameObject;
+
+                        }
+                    }
+                    else
+                    {
+                        hit.collider.gameObject.GetComponent<Interactuable>().hover();
+                        interactuable = hit.collider.gameObject;
+                    }
+
+                }
+
+
+            }
+            /**/
 
 
 
 
+            else
+            {
+
+
+                if (interactuable.GetComponent<Interactuable>())
+                {
+                    interactuable.GetComponent<Interactuable>().hover();
+
+
+                }
+                if (Input.GetButton("Fire1") && tiempo > 1f && !interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Moverse))
+                {
+                    tiempo = 0;
+
+                    seleccionado = true;
+                    if (interactuable.GetComponent<Interactuable>())
+                    {
+                        if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
+                        {
+
+                            interactuable.GetComponent<Interactuable>().coge(this.transform);
+                        }
+                        else if (!interactuable.GetComponent<Interactuable>().pulsado)
+                        {
+                            interactuable.GetComponent<Interactuable>().coge(this.transform);//es mas un pulsa
+
+                            interactuable = null;
+                            seleccionado = false;
+                            tiempo = 0;
+
+                        }
+
+
+                    }
+
+
+
+                }
+            }
+            /**/
+
+
+
+        }
+        else {
+            if (interactuable != null) {
+                interactuable.GetComponent<Interactuable>().unhover();
+
+            }
+
+        }
     }
 
     private void camara()

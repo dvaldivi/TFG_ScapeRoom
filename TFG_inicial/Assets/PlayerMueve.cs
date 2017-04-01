@@ -28,7 +28,7 @@ public class PlayerMueve : MonoBehaviour {
                 Vector3 desplazamiento = objetivo.transform.position - this.transform.position ;
                 
                 //this.transform.localRotation = guia.transform.localRotation;
-                this.transform.localPosition = this.transform.localPosition + new Vector3(desplazamiento.x/100,0, desplazamiento.z/100);
+                this.transform.localPosition = this.transform.localPosition + new Vector3(desplazamiento.x/100, desplazamiento.y/ 100, desplazamiento.z/100);
             }
             else {
                 moviendo = false;

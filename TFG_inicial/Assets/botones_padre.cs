@@ -9,6 +9,7 @@ public class botones_padre : MonoBehaviour {
     public Vector3 original;
     public bool activada;
     public GameObject trampilla;
+    public GameObject zona_mover;
     // Use this for initialization
     void Start () {
         activada = false;
@@ -18,13 +19,18 @@ public class botones_padre : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (activada) {
+        if (activada)
+        {
             Vector3 temp = desplazamiento - original;
             if (Vector3.Distance(desplazamiento, original) > 0.01f)
             {
                 trampilla.transform.position = trampilla.transform.position + temp / 50;
                 original = trampilla.transform.position;
             }
+            zona_mover.SetActive(true);
+        }
+        else {
+            zona_mover.SetActive(false);
         }
 	}
     public void caracter(char car) {

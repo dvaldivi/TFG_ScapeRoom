@@ -28,6 +28,7 @@ public class Interactuable : MonoBehaviour {
     public GameObject mitorre;
     //moverse
     public int t_hover;
+    public int t_moverse;
     public bool encima;
     // Use this for initialization
     void Start () {
@@ -73,20 +74,39 @@ public class Interactuable : MonoBehaviour {
             }
 
         }
-        if (encima)
-            t_hover++;
-           
-        if (t_hover > 100) {
-            if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().moviendo)
+        if (mi_tipo.Equals(Tipo_interactuable.Moverse))
+        {
+            if (Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.position) < 0.6f)
             {
-                 
+                
+            
+                this.GetComponent<Collider>().enabled = false;
+
             }
-            else
+            else {
+
+                this.GetComponent<Collider>().enabled = true;       
+
+            }
+            if (encima)
+                t_hover += 2;
+            else if (t_hover > 0)
             {
-                GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().mueveA(this.transform);
-                t_hover = 0;
-                Debug.Log(this.name);
-                encima = false;
+                t_hover -= 1;
+            }
+            if (t_hover > t_moverse)
+            {
+                if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().moviendo)
+                {
+                    t_hover = t_moverse/10;
+                }
+                else
+                {
+                    GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMueve>().mueveA(this.transform);
+                    t_hover = 0;
+
+                    encima = false;
+                }
             }
         }
 
@@ -95,7 +115,12 @@ public class Interactuable : MonoBehaviour {
 	}
 
     internal void unhover()
+
     {
+
+      
+
+        
         if (mi_tipo.Equals(Tipo_interactuable.Boton))
         {
             Boton_funcion(Funcion.unhover, null);
@@ -111,6 +136,11 @@ public class Interactuable : MonoBehaviour {
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
             Mover_tablero_funcion(Funcion.unhover, null);
+        }
+
+        else if (mi_tipo.Equals(Tipo_interactuable.Moverse))
+        {
+            Moverse_funcion(Funcion.unhover, null);
         }
         else {
            // throw new NotImplementedException();
@@ -235,7 +265,7 @@ public class Interactuable : MonoBehaviour {
 
             this.transform.position = pos_original + desplazamiento;
             tiempo_pulsado_mant = 5;
-            if (this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>()) {
+            if (this.gameObject.transform.parent != null && this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>()) {
                 this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>().caracter(letra);
                 }
             pulsado = true;
@@ -266,7 +296,7 @@ public class Interactuable : MonoBehaviour {
      */
     private void Moverse_funcion(Funcion v, object p)
     {
-        if (v.Equals(Funcion.hover))
+        if (v.Equals(Funcion.hover) )
         {
             encima = true;
            
@@ -275,6 +305,7 @@ public class Interactuable : MonoBehaviour {
         {
             encima = false;
             t_hover = 0;
+
         }
         else if (v.Equals(Funcion.coge))
         {

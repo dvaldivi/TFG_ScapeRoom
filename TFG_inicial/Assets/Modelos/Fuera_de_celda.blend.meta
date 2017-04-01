@@ -13,6 +13,9 @@ ModelImporter:
     100010: Cube
     100012: Cube_002
     100014: Cube_003
+    100016: Cube_004
+    100018: Cube_006
+    100020: Cube_005
     400000: //RootNode
     400002: Cube_000
     400004: Cube_001
@@ -21,6 +24,9 @@ ModelImporter:
     400010: Cube
     400012: Cube_002
     400014: Cube_003
+    400016: Cube_004
+    400018: Cube_006
+    400020: Cube_005
     2300000: //RootNode
     2300002: Cube_000
     2300004: Cube_001
@@ -29,6 +35,9 @@ ModelImporter:
     2300010: Cube
     2300012: Cube_002
     2300014: Cube_003
+    2300016: Cube_004
+    2300018: Cube_006
+    2300020: Cube_005
     3300000: //RootNode
     3300002: Cube_000
     3300004: Cube_001
@@ -37,6 +46,9 @@ ModelImporter:
     3300010: Cube
     3300012: Cube_002
     3300014: Cube_003
+    3300016: Cube_004
+    3300018: Cube_006
+    3300020: Cube_005
     4300000: Cube_001
     4300002: Cube_000
     4300004: Cylinder
@@ -44,6 +56,16 @@ ModelImporter:
     4300008: Cube_002
     4300010: Cube
     4300012: Cube_003
+    4300014: Cube_004
+    4300016: Cube_006
+    4300018: Cube_005
+    6400000: Cube
+    6400002: Cube_000
+    6400004: Cube_001
+    6400006: Cube_002
+    6400008: Cube_003
+    6400010: Cylinder
+    6400012: Cylinder_001
     7400000: Default Take
     9500000: //RootNode
   materials:
@@ -72,7 +94,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 2.5
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -89,7 +111,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     serializedVersion: 2
@@ -105,10 +127,10 @@ ModelImporter:
     rootMotionBoneName: 
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
