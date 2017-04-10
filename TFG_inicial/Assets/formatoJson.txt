@@ -1,0 +1,10 @@
+{		
+"nivel":"escape_room",
+"usuario":	"david",
+"movimientos_tot":	15,
+"time_resolve":	42,
+"objetos": {	
+	"cubo_fuego":	10,
+	"cubo_tierra":	5,
+	}	
+}		

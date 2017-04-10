@@ -66,6 +66,8 @@ ModelImporter:
     6400008: Cube_003
     6400010: Cylinder
     6400012: Cylinder_001
+    6400014: Cube_004
+    6400016: Cube_005
     7400000: Default Take
     9500000: //RootNode
   materials:

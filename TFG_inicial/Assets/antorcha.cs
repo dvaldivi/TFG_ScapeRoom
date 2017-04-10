@@ -9,7 +9,7 @@ public class antorcha : MonoBehaviour {
         if (collision.collider.gameObject.GetComponent<Interactuable>()) {
             GetComponent<Rigidbody>().useGravity = true;
             GetComponent<Rigidbody>().constraints= RigidbodyConstraints.None;
-
+            this.GetComponentInChildren<Light>().range = 30;
 
         }
     }
