@@ -264,7 +264,7 @@ public class Interactuable : MonoBehaviour {
         {
 
             this.transform.position = pos_original + desplazamiento;
-            tiempo_pulsado_mant = 5;
+            tiempo_pulsado_mant = 1;
             if (this.gameObject.transform.parent != null && this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>()) {
                 this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>().caracter(letra);
                 }
@@ -350,7 +350,7 @@ public class Interactuable : MonoBehaviour {
 
             factor = 1;
             original_y = transform.position.y;
-            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY;
+            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
             Debug.Log("coge");
            

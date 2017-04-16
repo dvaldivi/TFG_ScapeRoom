@@ -78,6 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Gota.cs" />
+    <Compile Include="Assets\Gotera.cs" />
     <Compile Include="Assets\Interactuable.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\DetectionUtilities\Detector.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\DetectionUtilities\DetectorLogicGate.cs" />
@@ -135,8 +137,10 @@
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\PolyHand.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedFinger.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedHand.cs" />
+    <Compile Include="Assets\Nota_visible_agua.cs" />
     <Compile Include="Assets\PlayerMueve.cs" />
     <Compile Include="Assets\Recopilador_informacion.cs" />
+    <Compile Include="Assets\Vaso.cs" />
     <Compile Include="Assets\antorcha.cs" />
     <Compile Include="Assets\botones_padre.cs" />
     <Compile Include="Assets\script\Comunicacion_servidor.cs" />
