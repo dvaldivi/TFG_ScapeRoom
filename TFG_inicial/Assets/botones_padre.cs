@@ -33,7 +33,7 @@ public class botones_padre : MonoBehaviour {
             zona_mover.SetActive(false);
         }
 	}
-    public void caracter(char car) {
+    public bool  caracter(char car) {
         if (cadena_actual.Length < clave.Length)
         {
             cadena_actual = cadena_actual + car;
@@ -44,6 +44,8 @@ public class botones_padre : MonoBehaviour {
         }
         if (cadena_actual.Equals(clave)) {
             activada = true;
+            return true;
         }
+        return false;
     }
 }

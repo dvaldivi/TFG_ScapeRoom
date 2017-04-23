@@ -266,9 +266,15 @@ public class Interactuable : MonoBehaviour {
             this.transform.position = pos_original + desplazamiento;
             tiempo_pulsado_mant = 1;
             if (this.gameObject.transform.parent != null && this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>()) {
-                this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>().caracter(letra);
+                if (this.gameObject.transform.parent.gameObject.GetComponent<botones_padre>().caracter(letra))
+                {
+                    pulsado = false;
                 }
-            pulsado = true;
+                else {
+                    pulsado = true;
+                }
+                }
+          
         }
         else if (v.Equals(Funcion.mueve))
         {
