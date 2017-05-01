@@ -78,9 +78,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Final.cs" />
+    <Compile Include="Assets\GameController2.cs" />
     <Compile Include="Assets\Gota.cs" />
     <Compile Include="Assets\Gotera.cs" />
     <Compile Include="Assets\Interactuable.cs" />
+    <Compile Include="Assets\JSON\JSONObject.cs" />
+    <Compile Include="Assets\JSON\JSONTemplates.cs" />
+    <Compile Include="Assets\JSON\VectorTemplates.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\DetectionUtilities\Detector.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\DetectionUtilities\DetectorLogicGate.cs" />
     <Compile Include="Assets\LeapMotion\Scripts\DetectionUtilities\ExtendedFingerDetector.cs" />
@@ -138,6 +143,7 @@
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedFinger.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedHand.cs" />
     <Compile Include="Assets\Nota_visible_agua.cs" />
+    <Compile Include="Assets\Object_info.cs" />
     <Compile Include="Assets\PlayerMueve.cs" />
     <Compile Include="Assets\Recopilador_informacion.cs" />
     <Compile Include="Assets\Vaso.cs" />
@@ -159,6 +165,7 @@
     <Compile Include="Assets\script\torre_eq.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\JSON\readme.txt" />
     <None Include="Assets\LeapMotion\Dependencies.txt" />
     <None Include="Assets\LeapMotion\README_BEFORE_UPDATING.txt" />
     <None Include="Assets\LeapMotion\Resources\LeapCG.cginc" />

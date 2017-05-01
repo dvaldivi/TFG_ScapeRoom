@@ -1,12 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Comunicacion_servidor : MonoBehaviour {
+public class Comunicacion_servidor : MonoBehaviour
+{
+    public bool enviado = false;
+    // Use this for initialization
+    void Start()
+    {
+        // StartCoroutine(UploadPNG());
+        /*
+        StartCoroutine(envia_tiempo_objetos("hola", 2));
+        StartCoroutine(envia_tiempo_objetos("prueba", 23));
+        StartCoroutine(envia_tiempo_objetos("tatata", 23));*/
 
-	// Use this for initialization
-	void Start () {
-       // StartCoroutine(UploadPNG());
+
+
     }
 
     // Update is called once per frame
@@ -15,28 +25,31 @@ public class Comunicacion_servidor : MonoBehaviour {
 
 
     }
-        public bool envia_servidor(string fecha,int time) {
+    public bool envia_servidor(string fecha, int time)
+    {
 
-        StartCoroutine(envia_tiempo_usuario(fecha, time));
+        StartCoroutine(envia_tiempo_objetos(fecha, time));
         return true;
     }
 
-    public string screenShotURL = "http://cucuruchete.comeze.com/register.php";
+    private string screenShotURL = "http://monitorizer.sytes.net:8000/polls/add_moves/";
 
     // Use this for initialization
 
 
-        
 
-    IEnumerator UploadPNG()
+
+
+
+    IEnumerator envia_tiempo_objetos(string nombre, int movimientos)
     {
         // We should only read the screen after all rendering is complete
         yield return new WaitForEndOfFrame();
 
         WWWForm form = new WWWForm();
-        form.AddField("user", "unity_user2");
-        form.AddField("pass", "asdasdsa");
-        WWW link = new WWW("http://cucuruchete.comeze.com/register.php", form);
+        form.AddField("name", nombre);
+        form.AddField("movimientos", movimientos.ToString());
+        WWW link = new WWW("http://monitorizer.sytes.net:8000/polls/add_moves/", form);
 
         // this is what you need to add
         yield return link;
@@ -50,37 +63,29 @@ public class Comunicacion_servidor : MonoBehaviour {
         {
             print("Finished Uploading Screenshot");
         }
+        print("Finished Uploading Screenshot23232");
 
-        /*
-        // Create a Web Form
-        WWWForm form = new WWWForm();
-        form.AddField("user", "unity_user");
-        form.AddField("pass", "unity_pass");
-        form.AddField("direccion", "unity_dir");
-        form.AddField("telefono", "unity_dir");
-        // Upload to a cgi script
-        WWW w = new WWW(screenShotURL, form);
-        yield return w;
-        if (!string.IsNullOrEmpty(w.error))
-        {
-            print(w.error);
-        }
-        else
-        {
-            print("Finished Uploading Screenshot");
-        }
-        */
     }
 
-    IEnumerator envia_tiempo_usuario(string fecha,int time)
+
+
+    internal void envia_info_servidor_Json(JSONObject j)
     {
+        StartCoroutine(envia_tiempo_objetos(j));
+
+    }
+
+    private IEnumerator envia_tiempo_objetos(JSONObject j)
+    {
+
         // We should only read the screen after all rendering is complete
+
         yield return new WaitForEndOfFrame();
 
         WWWForm form = new WWWForm();
-        form.AddField("user", fecha);
-        form.AddField("pass", time.ToString());
-        WWW link = new WWW("http://cucuruchete.comeze.com/register.php", form);
+        form.AddField("json", j.Print());
+
+        WWW link = new WWW("http://monitorizer.sytes.net:8000/polls/add_session/", form);
 
         // this is what you need to add
         yield return link;
@@ -94,25 +99,17 @@ public class Comunicacion_servidor : MonoBehaviour {
         {
             print("Finished Uploading Screenshot");
         }
+        Debug.Log("Enviado a servidor");
 
-        /*
-        // Create a Web Form
-        WWWForm form = new WWWForm();
-        form.AddField("user", "unity_user");
-        form.AddField("pass", "unity_pass");
-        form.AddField("direccion", "unity_dir");
-        form.AddField("telefono", "unity_dir");
-        // Upload to a cgi script
-        WWW w = new WWW(screenShotURL, form);
-        yield return w;
-        if (!string.IsNullOrEmpty(w.error))
-        {
-            print(w.error);
-        }
-        else
-        {
-            print("Finished Uploading Screenshot");
-        }
-        */
     }
+
+    internal bool envia_info_servidor(string name, int movimientos)
+    {
+
+        StartCoroutine(envia_tiempo_objetos(name, movimientos));
+        Debug.Log(name + "  " + movimientos.ToString());
+        return true;
+    }
+
+
 }

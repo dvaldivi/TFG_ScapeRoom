@@ -132,6 +132,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\JSON\Editor\JSONChecker.cs" />
     <Compile Include="Assets\LeapMotion\Editor\CustomEditorBase.cs" />
     <Compile Include="Assets\LeapMotion\Editor\LeapHandControllerEditor.cs" />
     <Compile Include="Assets\LeapMotion\Editor\LeapImageRetrieverEditor.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Assets\LeapMotion\Scripts\VR\Editor\LeapTemporalWarpingEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\JSON\readme.txt" />
     <None Include="Assets\LeapMotion\Dependencies.txt" />
     <None Include="Assets\LeapMotion\README_BEFORE_UPDATING.txt" />
     <None Include="Assets\LeapMotion\Resources\LeapCG.cginc" />

@@ -351,7 +351,7 @@ public class PlayerController : MonoBehaviour
                     Interactuable.Tipo_interactuable temp = hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo;
                     if (temp.Equals(Interactuable.Tipo_interactuable.Moverse))
                     {
-                        Debug.Log(Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position));
+                        //Debug.Log(Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position));
                         float temp2 = Vector3.Distance(this.transform.position, hit.collider.gameObject.transform.position);
                         if (temp2 < 3 && temp2 > 1)
                         {

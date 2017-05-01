@@ -27,10 +27,10 @@ public class botones_padre : MonoBehaviour {
                 trampilla.transform.position = trampilla.transform.position + temp / 50;
                 original = trampilla.transform.position;
             }
-            zona_mover.SetActive(true);
+          //  zona_mover.SetActive(true);
         }
         else {
-            zona_mover.SetActive(false);
+          //  zona_mover.SetActive(false);
         }
 	}
     public bool  caracter(char car) {
