@@ -78,11 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Final.cs" />
-    <Compile Include="Assets\GameController2.cs" />
-    <Compile Include="Assets\Gota.cs" />
-    <Compile Include="Assets\Gotera.cs" />
-    <Compile Include="Assets\Interactuable.cs" />
     <Compile Include="Assets\JSON\JSONObject.cs" />
     <Compile Include="Assets\JSON\JSONTemplates.cs" />
     <Compile Include="Assets\JSON\VectorTemplates.cs" />
@@ -142,27 +137,19 @@
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\PolyHand.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedFinger.cs" />
     <Compile Include="Assets\LeapMotionModules\Hands\Scripts\RiggedHand.cs" />
-    <Compile Include="Assets\Nota_visible_agua.cs" />
     <Compile Include="Assets\Object_info.cs" />
-    <Compile Include="Assets\PlayerMueve.cs" />
     <Compile Include="Assets\Recopilador_informacion.cs" />
-    <Compile Include="Assets\Vaso.cs" />
-    <Compile Include="Assets\antorcha.cs" />
-    <Compile Include="Assets\botones_padre.cs" />
-    <Compile Include="Assets\script\Comunicacion_servidor.cs" />
-    <Compile Include="Assets\script\Efecto.cs" />
-    <Compile Include="Assets\script\Equilibrio.cs" />
-    <Compile Include="Assets\script\GameController.cs" />
-    <Compile Include="Assets\script\Menu_principal.cs" />
-    <Compile Include="Assets\script\Menu_seleccionar.cs" />
-    <Compile Include="Assets\script\PlayerController.cs" />
-    <Compile Include="Assets\script\Reset.cs" />
-    <Compile Include="Assets\script\Text_iterator.cs" />
-    <Compile Include="Assets\script\apuntar.cs" />
-    <Compile Include="Assets\script\cubo.cs" />
-    <Compile Include="Assets\script\cubo_recoger.cs" />
-    <Compile Include="Assets\script\darvuelta.cs" />
-    <Compile Include="Assets\script\torre_eq.cs" />
+    <Compile Include="Assets\scripts\Comunicacion_servidor.cs" />
+    <Compile Include="Assets\scripts\Final.cs" />
+    <Compile Include="Assets\scripts\GameController2.cs" />
+    <Compile Include="Assets\scripts\Gota.cs" />
+    <Compile Include="Assets\scripts\Gotera.cs" />
+    <Compile Include="Assets\scripts\Interactuable.cs" />
+    <Compile Include="Assets\scripts\Nota_visible_agua.cs" />
+    <Compile Include="Assets\scripts\PlayerMueve.cs" />
+    <Compile Include="Assets\scripts\Vaso.cs" />
+    <Compile Include="Assets\scripts\antorcha.cs" />
+    <Compile Include="Assets\scripts\botones_padre.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\JSON\readme.txt" />
