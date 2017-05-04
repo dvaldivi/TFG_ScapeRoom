@@ -76,6 +76,7 @@ public class Interactuable : MonoBehaviour {
         }
         if (mi_tipo.Equals(Tipo_interactuable.Moverse))
         {
+            //Debug.Log(Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.position));
             if (Vector3.Distance(GameObject.FindGameObjectWithTag("Player").transform.position, this.transform.position) < 0.6f)
             {
                 

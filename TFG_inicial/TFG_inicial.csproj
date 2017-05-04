@@ -146,6 +146,7 @@
     <Compile Include="Assets\scripts\Gotera.cs" />
     <Compile Include="Assets\scripts\Interactuable.cs" />
     <Compile Include="Assets\scripts\Nota_visible_agua.cs" />
+    <Compile Include="Assets\scripts\PlayerController.cs" />
     <Compile Include="Assets\scripts\PlayerMueve.cs" />
     <Compile Include="Assets\scripts\Vaso.cs" />
     <Compile Include="Assets\scripts\antorcha.cs" />
