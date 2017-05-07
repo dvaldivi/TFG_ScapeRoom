@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using Leap;
 using Leap.Unity;
+using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,8 +28,13 @@ public class PlayerController : MonoBehaviour
     public HandModel Mano_derecha;
     private bool isHit;
     public LeapProvider provider = null;
-    private Transform camara_ob; 
-  
+    private Transform camara_ob;
+    private GameObject temp_transform;
+    public List<Vector3> aceleraciones;
+    private Vector3 aceleracion_media;
+    private Vector3 aceleracion_leap;
+    private Vector3 pos_mano;
+    public float tiempo_cal_ac;
     CursorLockMode wantedMode;
     // Use this for initialization
     // Apply requested cursor state
@@ -40,6 +46,8 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        aceleraciones = new List<Vector3>();
+        temp_transform = new GameObject();
         camara_ob = this.transform.FindChild("Main Camera").transform;
         wantedMode = CursorLockMode.Locked;
         SetCursorState();
@@ -123,31 +131,12 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    /*
-     * 
-     * 
-     * recoger objeto mas cercano a una posicion
-     *    close_colliders = Physics.OverlapSphere(pos_final, 0.13f);
-                        int j = 0;
-
-                        for (int i = 0; i < close_colliders.Length && j < 1; i++)
-                        {
-                            Debug.Log(close_colliders[i].gameObject.layer);
-                            if (close_colliders[i].gameObject.tag == "Grab")
-                            {
-                                GameObject temp = close_colliders[i].gameObject;
-                                gameObjects[j] = temp;
-                                j++;
-                            }
-
-                        }
-
-
-     * */
+   
     
     public void juego_oculus()
     {
-        Debug.Log("juego oculus");
+        
+
         RaycastHit hit;
         tiempo += Time.deltaTime;
         //mano derecha
@@ -158,140 +147,252 @@ public class PlayerController : MonoBehaviour
 
         posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
 
-       
-            if (interactuable != null && seleccionado && interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Mover_libremente))
-        {
-            interactuable.GetComponent<Interactuable>().mueve(this.transform);
+        /*
+         * MOVERSE
+         * */
+        if (Physics.Raycast(camara_ob.transform.position, camara_ob.transform.forward * 2, out hit)) {
+            cruceta.transform.position = hit.point;
 
-            if (Input.GetButtonUp("Fire1") && tiempo > 1f)
+            if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Moverse))
             {
-                if (interactuable.GetComponent<Interactuable>())
-                    interactuable.GetComponent<Interactuable>().suelta();
 
-                interactuable = null;
-                seleccionado = false;
-                tiempo = 0;
+                hit.collider.gameObject.GetComponent<Interactuable>().hover();
 
-            }
-            else if (Input.GetButtonUp("Fire2") && tiempo > 1f)
-            {
-                interactuable.GetComponent<Rigidbody>().AddForce(this.transform.forward * 1000);
-                if (interactuable.GetComponent<Interactuable>())
-                    interactuable.GetComponent<Interactuable>().suelta();
 
-                interactuable = null;
-                seleccionado = false;
-                tiempo = 0;
 
             }
 
         }
+        
 
-        if (Mano_derecha.IsTracked)
-        {
           
-            
-            Collider[] close_colliders = Physics.OverlapSphere(Mano_derecha.GetPalmPosition(), 0.2f);
-            int j = 0;
-            GameObject obj_cercano = null;
-            for (int i = 0; i < close_colliders.Length && j < 1; i++)
+        
+       
+        if (Mano_derecha.IsTracked)
+        {   /*
+            * CALCULAR ACELERACION MANO
+            */
+            if (tiempo_cal_ac < 0)
             {
-                
-                if (close_colliders[i].gameObject.GetComponent<Interactuable>() && !close_colliders[i].gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Moverse))
+                Vector3 posicion_actual = Mano_derecha.GetPalmPosition();
+                Vector3 aceleracion_actual = posicion_actual - pos_mano;
+                pos_mano = posicion_actual;
+
+                tiempo_cal_ac = 0.2f;
+                if (aceleraciones.Count > 4) {
+                    aceleraciones.Remove(aceleraciones[0]);
+                }
+                aceleraciones.Add(aceleracion_actual);
+                /*calculo aceleracion media */
+                Vector3 aceleracion_media = new Vector3(0,0,0);
+                for (int i = 0; i <  aceleraciones.Count;i++)
                 {
-                    Debug.Log(close_colliders[i].gameObject.name);
-                    obj_cercano = close_colliders[i].gameObject;
+                    aceleracion_media += aceleraciones[i];
                     
-                    j++;
+                }
+
+                aceleracion_leap = aceleracion_media / aceleraciones.Count;
+
+
+            }
+            else
+            {
+                tiempo_cal_ac -= Time.deltaTime;
+            }
+
+            /*
+             * SI TENEMOS UN OBJETO COGIDO / LANZAMIENTO / SOLTAR
+             * */
+            if (seleccionado)
+            {
+                if (Mano_derecha.GetLeapHand().PinchStrength <= 0.5 && tiempo > 1f)
+                {
+                    seleccionado = false;
+                    temp_transform.transform.position = Mano_derecha.GetPalmPosition();
+                    temp_transform.transform.rotation = Mano_derecha.GetPalmRotation();
+                    GameObject aux_aceleracion = new GameObject();
+
+                    aux_aceleracion.transform.position = aceleracion_leap;
+                    Debug.Log(aux_aceleracion.transform.position);
+                    interactuable.GetComponent<Interactuable>().suelta(temp_transform.transform, aux_aceleracion.transform);
+                    Destroy(aux_aceleracion);
+                    interactuable = null;
+                }
+                else
+                {
+                    temp_transform.transform.position = Mano_derecha.GetPalmPosition();
+                    temp_transform.transform.rotation = Mano_derecha.GetPalmRotation();
+                    interactuable.GetComponent<Interactuable>().mueve(temp_transform.transform);
+                }
+
+            }
+            else
+            {
+
+                /*
+                 * RECOGER OBJETO DE LIBRE USO
+                 * */
+                objeto_mover_oculus();
+                boton_oculus();
+               
+            }
+        }
+        else {
+            /*no tenemos mano detectada */
+            if (seleccionado) {
+                seleccionado = false;
+                
+
+                GameObject aux_aceleracion = new GameObject();
+                aceleracion_leap = new Vector3(0, 0, 0);
+                aux_aceleracion.transform.position = aceleracion_leap;
+
+                interactuable.GetComponent<Interactuable>().suelta(temp_transform.transform, aux_aceleracion.transform);
+                Destroy(aux_aceleracion);
+                interactuable = null;
+            }
+
+        }
+       
+    }
+
+    private void boton_oculus()
+    {
+        Collider[] close_colliders = Physics.OverlapSphere(Mano_derecha.GetPalmPosition(), 0.1f);
+        int j = 0;
+        GameObject obj_cercano = null;
+        GameObject mas_cercano= null;
+        float min_distance = float.MaxValue;
+        for (int i = 0; i < close_colliders.Length && j < 1; i++)
+        {
+
+            if (close_colliders[i].gameObject.GetComponent<Interactuable>() && close_colliders[i].gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
+            {
+
+                obj_cercano = close_colliders[i].gameObject;
+                float distanc_temp = Vector3.Distance(obj_cercano.transform.position, Mano_derecha.GetPalmPosition());
+                if (distanc_temp < min_distance) {
+                    mas_cercano = obj_cercano;
+                    min_distance = distanc_temp;
+                }
+                
+            }
+
+        }
+        if (mas_cercano != null) {
+            if (!mas_cercano.GetComponent<Interactuable>().pulsado)
+            {
+                mas_cercano.GetComponent<Interactuable>().coge(temp_transform.transform, true);//es mas un pulsa
+                
+            }
+        }
+        
+    }
+
+    private void objeto_mover_oculus()
+    {
+        Collider[] close_colliders = Physics.OverlapSphere(Mano_derecha.GetPalmPosition(), 0.2f);
+        int j = 0;
+        GameObject obj_cercano = null;
+        for (int i = 0; i < close_colliders.Length && j < 1; i++)
+        {
+
+            if (close_colliders[i].gameObject.GetComponent<Interactuable>() && close_colliders[i].gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Mover_libremente))
+            {
+
+                obj_cercano = close_colliders[i].gameObject;
+
+                j++;
+            }
+
+
+        }
+        if (obj_cercano != null && !seleccionado)
+        {
+
+            if (interactuable == null)
+            {
+
+                if (obj_cercano.GetComponent<Interactuable>())
+                {
+
+
+
+                    obj_cercano.GetComponent<Interactuable>().hover();
+                    interactuable = obj_cercano;
+
+
+                }
+
+            }
+            else if (interactuable != null && obj_cercano.name != interactuable.gameObject.name)
+            {
+
+                if (interactuable.GetComponent<Interactuable>())
+                {
+                    interactuable.GetComponent<Interactuable>().unhover();
+
+
+                }
+                if (obj_cercano.GetComponent<Interactuable>())
+                {
+                    Interactuable.Tipo_interactuable temp = obj_cercano.GetComponent<Interactuable>().mi_tipo;
+
+                    obj_cercano.GetComponent<Interactuable>().hover();
+                    interactuable = obj_cercano;
+
+
                 }
 
 
             }
-            if (obj_cercano != null && !seleccionado) {
+            else if (interactuable != null && obj_cercano.name == interactuable.gameObject.name)
+            {
 
-                if (interactuable == null)
+            }
+
+            if (interactuable != null)
+            {
+
+
+                if (Mano_derecha != null && Mano_derecha.GetLeapHand().PinchStrength > 0.5 && tiempo > 1f)
                 {
-
-                    if (obj_cercano.GetComponent<Interactuable>())
-                    {
-
-                        Interactuable.Tipo_interactuable temp = obj_cercano.GetComponent<Interactuable>().mi_tipo;
-                       
-                        obj_cercano.GetComponent<Interactuable>().hover();
-                        interactuable = obj_cercano;
-                        
-
-                    }
-
-                }
-                else if (interactuable != null && obj_cercano.name != interactuable.gameObject.name)
-                {
-
+                    tiempo = 0;
+                    seleccionado = true;
                     if (interactuable.GetComponent<Interactuable>())
                     {
-                        interactuable.GetComponent<Interactuable>().unhover();
 
-
-                    }
-                    if (obj_cercano.GetComponent<Interactuable>())
-                    {
-                        Interactuable.Tipo_interactuable temp = obj_cercano.GetComponent<Interactuable>().mi_tipo;
-
-                        obj_cercano.GetComponent<Interactuable>().hover();
-                        interactuable = obj_cercano;
-                        
-
-                    }
-
-
-                }
-                else
-                {
-
-
-                    if (interactuable.GetComponent<Interactuable>())
-                    {
-                        interactuable.GetComponent<Interactuable>().hover();
-
-
-                    }
-                    if (leap_hand_drcha.PinchStrength > 0.5 && tiempo > 1f)
-                    {
-                        tiempo = 0;
-
-                        seleccionado = true;
-                        if (interactuable.GetComponent<Interactuable>())
+                        temp_transform.transform.position = Mano_derecha.GetPalmPosition();
+                        temp_transform.transform.rotation = Mano_derecha.GetPalmRotation();
+                        if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
                         {
-                            if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
-                            {
 
-                                interactuable.GetComponent<Interactuable>().coge(camara_ob.transform);
-                            }
-                            else if (!interactuable.GetComponent<Interactuable>().pulsado)
-                            {
-                                interactuable.GetComponent<Interactuable>().coge(camara_ob.transform);//es mas un pulsa
 
-                                interactuable = null;
-                                seleccionado = false;
-                                tiempo = 0;
+                            interactuable.GetComponent<Interactuable>().coge(temp_transform.transform, true);
+                        }
+                        else if (!interactuable.GetComponent<Interactuable>().pulsado)
+                        {
+                            interactuable.GetComponent<Interactuable>().coge(temp_transform.transform, true);//es mas un pulsa
 
-                            }
-
+                            interactuable = null;
+                            seleccionado = false;
+                            tiempo = 0;
 
                         }
 
 
-
                     }
+
+
+
                 }
+            }
 
 
 
 
 
-            } 
         }
-       
     }
 
     public void juego_raton()
@@ -314,7 +415,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonUp("Fire1") && tiempo > 1f)
             {
                 if (interactuable.GetComponent<Interactuable>())
-                    interactuable.GetComponent<Interactuable>().suelta();
+                    interactuable.GetComponent<Interactuable>().suelta(null,null);
 
                 interactuable = null;
                 seleccionado = false;
@@ -325,7 +426,7 @@ public class PlayerController : MonoBehaviour
             {
                 interactuable.GetComponent<Rigidbody>().AddForce(this.transform.forward * 1000);
                 if (interactuable.GetComponent<Interactuable>())
-                    interactuable.GetComponent<Interactuable>().suelta();
+                    interactuable.GetComponent<Interactuable>().suelta(null,null);
 
                 interactuable = null;
                 seleccionado = false;
@@ -428,11 +529,11 @@ public class PlayerController : MonoBehaviour
                         if (!interactuable.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Boton))
                         {
 
-                            interactuable.GetComponent<Interactuable>().coge(camara_ob.transform);
+                            interactuable.GetComponent<Interactuable>().coge(camara_ob.transform,false);
                         }
                         else if (!interactuable.GetComponent<Interactuable>().pulsado)
                         {
-                            interactuable.GetComponent<Interactuable>().coge(camara_ob.transform);//es mas un pulsa
+                            interactuable.GetComponent<Interactuable>().coge(camara_ob.transform,false);//es mas un pulsa
 
                             interactuable = null;
                             seleccionado = false;

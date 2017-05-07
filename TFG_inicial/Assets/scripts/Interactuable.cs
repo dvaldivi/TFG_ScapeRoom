@@ -70,7 +70,7 @@ public class Interactuable : MonoBehaviour {
         if (pulsado && tiempo_pulsado_mant >= 0 ) {
                 tiempo_pulsado_mant -= Time.deltaTime;
             if (tiempo_pulsado_mant < 0) {
-                suelta();
+                suelta(null,null);
             }
 
         }
@@ -89,9 +89,8 @@ public class Interactuable : MonoBehaviour {
                 this.GetComponent<Collider>().enabled = true;       
 
             }
-            if (encima)
-                t_hover += 2;
-            else if (t_hover > 0)
+            
+             if (t_hover > 0)
             {
                 t_hover -= 1;
             }
@@ -132,7 +131,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_libremente))
         {
-            Mover_libremente_funcion(Funcion.unhover, null);
+            Mover_libremente_funcion(Funcion.unhover, null,null);
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
@@ -159,7 +158,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_libremente))
         {
-            Mover_libremente_funcion(Funcion.hover, null);
+            Mover_libremente_funcion(Funcion.hover, null,null);
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
@@ -176,7 +175,7 @@ public class Interactuable : MonoBehaviour {
     }
 
    
-    internal void coge(Transform transform)
+    internal void coge(Transform transform,Boolean oculus)
     {
         if (mi_tipo.Equals(Tipo_interactuable.Boton))
         {
@@ -188,7 +187,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_libremente))
         {
-            Mover_libremente_funcion(Funcion.coge, transform);
+            Mover_libremente_funcion(Funcion.coge, transform,null);
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
@@ -212,7 +211,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_libremente))
         {
-            Mover_libremente_funcion(Funcion.mueve, point);
+            Mover_libremente_funcion(Funcion.mueve, point,null);
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
@@ -223,7 +222,7 @@ public class Interactuable : MonoBehaviour {
             //throw new NotImplementedException();
         }
     }
-    internal void suelta()
+    internal void suelta(Transform posicion, Transform aceleracion)
     {
         if (mi_tipo.Equals(Tipo_interactuable.Boton))
         {
@@ -235,7 +234,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_libremente))
         {
-            Mover_libremente_funcion(Funcion.suelta, null);
+            Mover_libremente_funcion(Funcion.suelta, posicion,aceleracion);
         }
         else if (mi_tipo.Equals(Tipo_interactuable.Mover_tablero))
         {
@@ -305,18 +304,19 @@ public class Interactuable : MonoBehaviour {
     {
         if (v.Equals(Funcion.hover) )
         {
+            t_hover += 10;
             encima = true;
            
         }
         else if (v.Equals(Funcion.unhover))
-        {
+        {/*
             encima = false;
             t_hover = 0;
-
+            */
         }
         else if (v.Equals(Funcion.coge))
         {
-
+            Debug.Log("entra en mov ");
             this.transform.position = pos_original + desplazamiento;
             tiempo_pulsado_mant = 5;
             pulsado = true;
@@ -340,7 +340,7 @@ public class Interactuable : MonoBehaviour {
        // throw new NotImplementedException();
     }
 
-    private void Mover_libremente_funcion(Funcion v, Transform vector3)
+    private void Mover_libremente_funcion(Funcion v, Transform posicion, Transform aceleracion)
     {
         if (v.Equals(Funcion.hover))
         {
@@ -359,11 +359,12 @@ public class Interactuable : MonoBehaviour {
             original_y = transform.position.y;
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
 
-            Debug.Log("coge");
+
            
         }
         else if (v.Equals(Funcion.mueve))
         {
+            factor = 0;
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0 && factor < 2f)
             {
@@ -375,19 +376,24 @@ public class Interactuable : MonoBehaviour {
                 factor -= 0.1f;
 
             }
-            this.transform.position = vector3.position + vector3.forward * factor;
-            if (this.transform.position.y < original_y)
-            {
+            this.transform.position = posicion.position+ new Vector3(0,0.15f,0);
+            this.transform.rotation = posicion.rotation ;
+            /*  if (this.transform.position.y < original_y)
+              {
 
-                this.transform.position = new Vector3(this.transform.position.x, original_y, this.transform.position.z);
-            }
+                  this.transform.position = new Vector3(this.transform.position.x, original_y, this.transform.position.z);
+              }*/
         }
         else if (v.Equals(Funcion.suelta))
         {
 
-            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None; if (normal != null)
-                GetComponent<Renderer>().material = normal;
-            if (mitorre != null)
+            this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            this.transform.position = posicion.position + new Vector3(0,0.15f,0) ;
+            Debug.Log("Envia con fuerza " + aceleracion.transform.position);
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(aceleracion.transform.position.x * 500f, aceleracion.transform.position.y * 1000f, aceleracion.transform.position.z * 2600f));
+            /*if (normal != null)
+                GetComponent<Renderer>().material = normal;*/
+            /*if (mitorre != null)
             {
                 if (Vector3.Distance(this.transform.position, mitorre.transform.position) < 50)
                 {
@@ -403,7 +409,7 @@ public class Interactuable : MonoBehaviour {
                     mitorre = null;
                     this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
                 }
-            }
+            }*/
         }
 
 
