@@ -36,6 +36,8 @@ public class Recopilador_informacion : MonoBehaviour
             anade_objetos();
             visto = true;
         }
+        
+      
     }
 
     private void anade_objetos()
@@ -148,6 +150,9 @@ public class Recopilador_informacion : MonoBehaviour
             String player = "prueba";
             JSONObject j = new JSONObject(JSONObject.Type.OBJECT);
             Scene scene = SceneManager.GetActiveScene();
+          
+            /*j.AddField("devClass", "14139636727181677031");*/
+            j.AddField("state", "won");
             j.AddField("nivel", scene.name);
             j.AddField("usuario", "admin");
         

@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 pos_mano;
     public float tiempo_cal_ac;
     CursorLockMode wantedMode;
+    private float tiempo_mano;
     // Use this for initialization
     // Apply requested cursor state
     void SetCursorState()
@@ -46,6 +47,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
+        tiempo_mano = 0;
         aceleraciones = new List<Vector3>();
         temp_transform = new GameObject();
         camara_ob = this.transform.FindChild("Main Camera").transform;
@@ -135,39 +137,13 @@ public class PlayerController : MonoBehaviour
     
     public void juego_oculus()
     {
-        
-
-        RaycastHit hit;
-        tiempo += Time.deltaTime;
-        //mano derecha
-        Vector3 posicion_relativa = Vector3.zero;
-
-        Debug.DrawRay(camara_ob.transform.position, camara_ob.transform.forward, Color.green);
-        //  Debug.DrawRay(transform.position, transform.forward * 3000, Color.red);
-
-        posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
-
-        /*
-         * MOVERSE
-         * */
-        if (Physics.Raycast(camara_ob.transform.position, camara_ob.transform.forward * 2, out hit)) {
-            cruceta.transform.position = hit.point;
-
-            if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Moverse))
-            {
-
-                hit.collider.gameObject.GetComponent<Interactuable>().hover();
 
 
 
-            }
+        //moverseOculus();
+        moverse2Oculus();
 
-        }
-        
 
-          
-        
-       
         if (Mano_derecha.IsTracked)
         {   /*
             * CALCULAR ACELERACION MANO
@@ -183,7 +159,7 @@ public class PlayerController : MonoBehaviour
                     aceleraciones.Remove(aceleraciones[0]);
                 }
                 aceleraciones.Add(aceleracion_actual);
-                /*calculo aceleracion media */
+              
                 Vector3 aceleracion_media = new Vector3(0,0,0);
                 for (int i = 0; i <  aceleraciones.Count;i++)
                 {
@@ -205,6 +181,7 @@ public class PlayerController : MonoBehaviour
              * */
             if (seleccionado)
             {
+                Debug.Log("cogido");
                 if (Mano_derecha.GetLeapHand().PinchStrength <= 0.5 && tiempo > 1f)
                 {
                     seleccionado = false;
@@ -240,6 +217,7 @@ public class PlayerController : MonoBehaviour
         else {
             /*no tenemos mano detectada */
             if (seleccionado) {
+                Debug.Log("mano no detectada");
                 seleccionado = false;
                 
 
@@ -254,6 +232,71 @@ public class PlayerController : MonoBehaviour
 
         }
        
+    }
+
+    private void moverse2Oculus()
+    {
+        RaycastHit hit;
+        tiempo += Time.deltaTime;
+        //mano derecha
+        Vector3 posicion_relativa = Vector3.zero;
+
+        Debug.DrawRay(camara_ob.transform.position, camara_ob.transform.forward, Color.green);
+        //  Debug.DrawRay(transform.position, transform.forward * 3000, Color.red);
+
+        posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
+
+
+        if (Mano_izq.IsTracked)
+        {
+            if (Mano_izq.GetLeapHand().PinchStrength > 0.5) {
+
+                tiempo_mano += Time.deltaTime * 1.3f;
+
+                if (tiempo_mano >= 1) {
+                    if (this.GetComponent<Rigidbody>().velocity.magnitude < 1)
+                    {
+                        this.GetComponent<Rigidbody>().AddForce(new Vector3(camara_ob.transform.forward.x, camara_ob.transform.forward.y*5, camara_ob.transform.forward.z) * 30);
+                    }
+
+                }
+            } else if (tiempo_mano > 0) {
+                tiempo_mano -= Time.deltaTime;
+            }
+
+        }
+    }
+
+    private void moverseOculus()
+    {
+        RaycastHit hit;
+        tiempo += Time.deltaTime;
+        //mano derecha
+        Vector3 posicion_relativa = Vector3.zero;
+
+        Debug.DrawRay(camara_ob.transform.position, camara_ob.transform.forward, Color.green);
+        //  Debug.DrawRay(transform.position, transform.forward * 3000, Color.red);
+
+        posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
+
+        /*
+         * MOVERSE
+         * */
+        if (Physics.Raycast(camara_ob.transform.position, camara_ob.transform.forward * 2, out hit))
+        {
+            cruceta.transform.position = hit.point;
+
+            if (hit.collider.gameObject.GetComponent<Interactuable>() && hit.collider.gameObject.GetComponent<Interactuable>().mi_tipo.Equals(Interactuable.Tipo_interactuable.Moverse))
+            {
+
+                hit.collider.gameObject.GetComponent<Interactuable>().hover();
+
+
+
+            }
+
+        }
+
     }
 
     private void boton_oculus()
@@ -301,7 +344,7 @@ public class PlayerController : MonoBehaviour
             {
 
                 obj_cercano = close_colliders[i].gameObject;
-
+                Debug.Log(obj_cercano.name);
                 j++;
             }
 
@@ -309,10 +352,10 @@ public class PlayerController : MonoBehaviour
         }
         if (obj_cercano != null && !seleccionado)
         {
-
+            Debug.Log(2);
             if (interactuable == null)
             {
-
+                Debug.Log(3);
                 if (obj_cercano.GetComponent<Interactuable>())
                 {
 
@@ -327,7 +370,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (interactuable != null && obj_cercano.name != interactuable.gameObject.name)
             {
-
+                Debug.Log(interactuable.name);
                 if (interactuable.GetComponent<Interactuable>())
                 {
                     interactuable.GetComponent<Interactuable>().unhover();
@@ -348,12 +391,12 @@ public class PlayerController : MonoBehaviour
             }
             else if (interactuable != null && obj_cercano.name == interactuable.gameObject.name)
             {
-
+                Debug.Log(interactuable.name);
             }
 
             if (interactuable != null)
             {
-
+                Debug.Log(interactuable.name);
 
                 if (Mano_derecha != null && Mano_derecha.GetLeapHand().PinchStrength > 0.5 && tiempo > 1f)
                 {

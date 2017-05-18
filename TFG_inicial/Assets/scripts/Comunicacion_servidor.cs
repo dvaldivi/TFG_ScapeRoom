@@ -40,13 +40,14 @@ public class Comunicacion_servidor : MonoBehaviour
 
 
 
-
+        
     IEnumerator envia_tiempo_objetos(string nombre, int movimientos)
     {
         // We should only read the screen after all rendering is complete
         yield return new WaitForEndOfFrame();
 
         WWWForm form = new WWWForm();
+        form.AddField("status", "won");
         form.AddField("name", nombre);
         form.AddField("movimientos", movimientos.ToString());
         WWW link = new WWW("http://monitorizer.sytes.net:8000/polls/add_moves/", form);
@@ -102,7 +103,7 @@ public class Comunicacion_servidor : MonoBehaviour
         Debug.Log("Enviado a servidor");
 
     }
-
+    /*
     internal bool envia_info_servidor(string name, int movimientos)
     {
 
@@ -110,6 +111,6 @@ public class Comunicacion_servidor : MonoBehaviour
         Debug.Log(name + "  " + movimientos.ToString());
         return true;
     }
-
+    */
 
 }

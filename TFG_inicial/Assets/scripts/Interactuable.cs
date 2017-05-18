@@ -343,7 +343,9 @@ public class Interactuable : MonoBehaviour {
     private void Mover_libremente_funcion(Funcion v, Transform posicion, Transform aceleracion)
     {
         if (v.Equals(Funcion.hover))
+
         {
+            Debug.Log("libremente");
             if(rojo != null)
             GetComponent<Renderer>().material = rojo;
         }
