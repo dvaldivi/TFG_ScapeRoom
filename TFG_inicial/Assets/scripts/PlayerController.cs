@@ -189,9 +189,15 @@ public class PlayerController : MonoBehaviour
                     temp_transform.transform.rotation = Mano_derecha.GetPalmRotation();
                     GameObject aux_aceleracion = new GameObject();
 
-                    aux_aceleracion.transform.position = aceleracion_leap;
+
+                    /*aux_aceleracion.transform.position = aceleracion_leap;*/
+
+                    aux_aceleracion.transform.position = Mano_derecha.GetLeapHand().PalmVelocity.ToVector3();
                     Debug.Log(aux_aceleracion.transform.position);
+                    
                     interactuable.GetComponent<Interactuable>().suelta(temp_transform.transform, aux_aceleracion.transform);
+                    
+                   
                     Destroy(aux_aceleracion);
                     interactuable = null;
                 }
@@ -246,22 +252,57 @@ public class PlayerController : MonoBehaviour
 
         posicion_relativa = posRelativa_raton(mano_falsa_izq.transform.position);
 
-
+        
         if (Mano_izq.IsTracked)
         {
-            if (Mano_izq.GetLeapHand().PinchStrength > 0.5) {
+            float subir = 0;
+            if (this.GetComponent<Rigidbody>().velocity.magnitude < 1)
+            {
+                subir = Mano_izq.GetLeapHand().PalmVelocity.ToVector3().y;
+            }
 
+            if (Mano_izq.GetLeapHand().PinchStrength > 0.5f)
+            {
+
+                Debug.Log(tiempo_mano + "adelante " + Mano_izq.GetLeapHand().PinchStrength);
                 tiempo_mano += Time.deltaTime * 1.3f;
 
-                if (tiempo_mano >= 1) {
+                if (tiempo_mano >= 0.7f)
+                {
                     if (this.GetComponent<Rigidbody>().velocity.magnitude < 1)
                     {
-                        this.GetComponent<Rigidbody>().AddForce(new Vector3(camara_ob.transform.forward.x, camara_ob.transform.forward.y*5, camara_ob.transform.forward.z) * 30);
+                        this.GetComponent<Rigidbody>().AddForce(new Vector3(camara_ob.transform.forward.x, 0.6f, camara_ob.transform.forward.z) * 30);
+                        this.GetComponent<Rigidbody>().drag = 0;
                     }
 
                 }
-            } else if (tiempo_mano > 0) {
+            }
+           /* else if (Mano_izq.GetLeapHand().PinchStrength < 0.1f)
+            {
+                {
+                    Debug.Log("atras " + Mano_izq.GetLeapHand().PinchStrength);
+
+                    tiempo_mano += Time.deltaTime * 1.3f;
+
+                    if (tiempo_mano >= 1)
+                    {
+                        if (this.GetComponent<Rigidbody>().velocity.magnitude < 1)
+                        {
+                            this.GetComponent<Rigidbody>().AddForce(new Vector3(camara_ob.transform.forward.x,subir, camara_ob.transform.forward.z) * 30);
+                        }
+
+                    }
+                }
+            }
+            */
+            else if (tiempo_mano > 0)
+            {
                 tiempo_mano -= Time.deltaTime;
+                
+            }
+            else
+            {
+                Debug.Log("naada");
             }
 
         }
