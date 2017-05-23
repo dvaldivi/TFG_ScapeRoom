@@ -4,6 +4,7 @@ using System;
 using Leap;
 using Leap.Unity;
 using System.Collections.Generic;
+using UnityEngine.VR;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     public float tiempo_cal_ac;
     CursorLockMode wantedMode;
     private float tiempo_mano;
+    
     // Use this for initialization
     // Apply requested cursor state
     void SetCursorState()
@@ -45,8 +47,30 @@ public class PlayerController : MonoBehaviour
         // Hide cursor when locking
         Cursor.visible = (CursorLockMode.Locked != wantedMode);
     }
+    IEnumerator LoadDevice(string newDevice, bool enable)
+    {
+        VRSettings.LoadDeviceByName(newDevice);
+        yield return null;
+        VRSettings.enabled = enable;
+    }
+
+    void enableVr()
+    {
+        StartCoroutine(LoadDevice("oculus", true));
+    }
+
+    void disableVr()
+    {
+        StartCoroutine(LoadDevice("", false));
+    }
     void Start()
     {
+        enableVr();
+        
+        
+        VRSettings.enabled = true;
+        Debug.Log(PlayerPrefs.GetString("UserName"));
+        Debug.Log(PlayerPrefs.GetString("AppCode"));
         tiempo_mano = 0;
         aceleraciones = new List<Vector3>();
         temp_transform = new GameObject();
@@ -62,12 +86,7 @@ public class PlayerController : MonoBehaviour
 
         leap_hand_izq = Mano_izq.GetLeapHand();
         leap_hand_drcha = Mano_derecha.GetLeapHand();
-        /*
-        if (modo_raton) {
-            provider.enabled = true;
-        }     else
-            provider.enabled = false;
-            */
+      
 
     }
 
@@ -264,7 +283,7 @@ public class PlayerController : MonoBehaviour
             if (Mano_izq.GetLeapHand().PinchStrength > 0.5f)
             {
 
-                Debug.Log(tiempo_mano + "adelante " + Mano_izq.GetLeapHand().PinchStrength);
+
                 tiempo_mano += Time.deltaTime * 1.3f;
 
                 if (tiempo_mano >= 0.7f)

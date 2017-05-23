@@ -153,10 +153,11 @@ public class Recopilador_informacion : MonoBehaviour
           
             /*j.AddField("devClass", "14139636727181677031");*/
             j.AddField("state", "won");
-            j.AddField("nivel", scene.name);
-            j.AddField("usuario", "admin");
-        
-        
+            j.AddField("nivel", "JuegoPrueba1");
+            j.AddField("usuario", PlayerPrefs.GetString("UserName"));
+            j.AddField("devClass", PlayerPrefs.GetString("AppCode"));
+
+
             j.AddField("time_resolve", time);
             JSONObject arr = new JSONObject(JSONObject.Type.ARRAY);
             j.AddField("objetos", arr);

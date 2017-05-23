@@ -392,7 +392,7 @@ public class Interactuable : MonoBehaviour {
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             this.transform.position = posicion.position + new Vector3(0,0.15f,0) ;
             Debug.Log("Envia con fuerza " + aceleracion.transform.position);
-            this.GetComponent<Rigidbody>().AddForce(new Vector3(aceleracion.transform.position.x * 500f, aceleracion.transform.position.y * 1000f, aceleracion.transform.position.z * 2600f));
+            this.GetComponent<Rigidbody>().AddForce(new Vector3(aceleracion.transform.position.x * 200, aceleracion.transform.position.y * 200, aceleracion.transform.position.z * 200));
             /*if (normal != null)
                 GetComponent<Renderer>().material = normal;*/
             /*if (mitorre != null)
