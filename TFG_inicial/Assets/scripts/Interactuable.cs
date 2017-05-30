@@ -360,9 +360,11 @@ public class Interactuable : MonoBehaviour {
             factor = 1;
             original_y = transform.position.y;
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            this.GetComponent<Collider>().isTrigger = true;
 
 
-           
+
+
         }
         else if (v.Equals(Funcion.mueve))
         {
@@ -388,7 +390,7 @@ public class Interactuable : MonoBehaviour {
         }
         else if (v.Equals(Funcion.suelta))
         {
-
+            this.GetComponent<Collider>().isTrigger = false;
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             this.transform.position = posicion.position + new Vector3(0,0.15f,0) ;
             Debug.Log("Envia con fuerza " + aceleracion.transform.position);
