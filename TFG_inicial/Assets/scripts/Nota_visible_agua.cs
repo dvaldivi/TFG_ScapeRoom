@@ -18,7 +18,7 @@ public class Nota_visible_agua : MonoBehaviour {
 	}
     public void llena()
     {
-        if (cantidad > 50)
+        if (cantidad > 0)
         {
             GetComponent<Renderer>().material = rojo;
             Debug.Log("Solucion");

@@ -210,7 +210,13 @@ public class Authentication : MonoBehaviour {
             Debug.Log("WWW Error: " + request.error);
         }
     }
-
+    public void continue_button()
+    {
+        /*GameObject.Find("Main_Menu").SetActive(false);**/
+        login_reference.SetActive(true);
+        register_reference.SetActive(false);
+        appCode_reference.SetActive(false);
+    }
     public void login_on_click()
     {
         InputField user_input = GameObject.Find("Login_Username_Input").GetComponent<InputField>();

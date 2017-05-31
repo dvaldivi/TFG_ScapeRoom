@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
                     /*aux_aceleracion.transform.position = aceleracion_leap;*/
 
                     aux_aceleracion.transform.position = Mano_derecha.GetLeapHand().PalmVelocity.ToVector3();
-                    Debug.Log(aux_aceleracion.transform.position);
+
                     
                     interactuable.GetComponent<Interactuable>().suelta(temp_transform.transform, aux_aceleracion.transform);
                     
@@ -412,7 +412,7 @@ public class PlayerController : MonoBehaviour
         }
         if (obj_cercano != null && !seleccionado)
         {
-            Debug.Log(2);
+
             if (interactuable == null)
             {
                 Debug.Log(3);
@@ -430,7 +430,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (interactuable != null && obj_cercano.name != interactuable.gameObject.name)
             {
-                Debug.Log(interactuable.name);
+
                 if (interactuable.GetComponent<Interactuable>())
                 {
                     interactuable.GetComponent<Interactuable>().unhover();
@@ -451,12 +451,12 @@ public class PlayerController : MonoBehaviour
             }
             else if (interactuable != null && obj_cercano.name == interactuable.gameObject.name)
             {
-                Debug.Log(interactuable.name);
+               
             }
 
             if (interactuable != null)
             {
-                Debug.Log(interactuable.name);
+               
 
                 if (Mano_derecha != null && Mano_derecha.GetLeapHand().PinchStrength > 0.5 && tiempo > 1f)
                 {

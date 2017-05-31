@@ -136,7 +136,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\JSON\Editor\JSONChecker.cs" />
     <Compile Include="Assets\LeapMotion\Editor\CustomEditorBase.cs" />
     <Compile Include="Assets\LeapMotion\Editor\LeapHandControllerEditor.cs" />
     <Compile Include="Assets\LeapMotion\Editor\LeapImageRetrieverEditor.cs" />
@@ -152,9 +151,9 @@
     <Compile Include="Assets\OVR\Editor\OVRPluginUpdater.cs" />
     <Compile Include="Assets\OVR\Editor\OVRPluginUpdaterStub.cs" />
     <Compile Include="Assets\OVR\Editor\OVRScreenshotWizard.cs" />
+    <Compile Include="Assets\VrTracker\JSON\Editor\JSONChecker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\JSON\readme.txt" />
     <None Include="Assets\LeapMotion\Dependencies.txt" />
     <None Include="Assets\LeapMotion\README_BEFORE_UPDATING.txt" />
     <None Include="Assets\LeapMotion\Resources\LeapCG.cginc" />
@@ -176,7 +175,7 @@
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
-    <None Include="Assets\formatoJson.txt" />
+    <None Include="Assets\VrTracker\JSON\readme.txt" />
     <None Include="Assets\pasos_Scape_room.txt" />
     <None Include="Assets\texturas\UniTOON - Ultra\BasicToon\BasicOutline 1.shader" />
     <None Include="Assets\texturas\UniTOON - Ultra\BasicToon\BasicToon.shader" />

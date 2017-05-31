@@ -345,7 +345,7 @@ public class Interactuable : MonoBehaviour {
         if (v.Equals(Funcion.hover))
 
         {
-            Debug.Log("libremente");
+            
             if(rojo != null)
             GetComponent<Renderer>().material = rojo;
         }
@@ -393,7 +393,7 @@ public class Interactuable : MonoBehaviour {
             this.GetComponent<Collider>().isTrigger = false;
             this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             this.transform.position = posicion.position + new Vector3(0,0.15f,0) ;
-            Debug.Log("Envia con fuerza " + aceleracion.transform.position);
+
             this.GetComponent<Rigidbody>().AddForce(new Vector3(aceleracion.transform.position.x * 200, aceleracion.transform.position.y * 200, aceleracion.transform.position.z * 200));
             /*if (normal != null)
                 GetComponent<Renderer>().material = normal;*/

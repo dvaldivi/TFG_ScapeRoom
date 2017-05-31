@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Recopilador_informacion : MonoBehaviour
+public class Vr_Tracker : MonoBehaviour
 {
+    /*RECOGER INFO OBJETOS
+     * */
     private GameObject GAMECONTROLLER;
     public List<String> noqueridos_nombre_exacto;
     public List<String> noqueridos_nombre_parecido;
@@ -17,14 +19,20 @@ public class Recopilador_informacion : MonoBehaviour
     public int n_objetos;
     private bool visto;
     private bool visto2;
+    /*COMUNICACION SERVIDOR
+     * */
+    public bool enviado = false;
+    public string Url_envio_datos = "http://monitorizer.sytes.net:8000/polls/add_session/";
     // Use this for initialization
     void Start()
     {
         visto = false;
         visto2 = false;
         GAMECONTROLLER = GameObject.FindGameObjectWithTag("GameController");
-       
-       
+        Scene scene = SceneManager.GetActiveScene();
+
+        Debug.Log("Active scene is '" + scene.name + "'.");
+
 
     }
 
@@ -53,7 +61,7 @@ public class Recopilador_informacion : MonoBehaviour
         Dictionary<String, int> diccionario = new Dictionary<String, int>();
 
      
-        Debug.Log("añade objeto");
+
         foreach (GameObject go in allObjects)
         {
             bool valido = true;
@@ -93,16 +101,14 @@ public class Recopilador_informacion : MonoBehaviour
                     }
                     go.name = nombre_obj;
 
-                    temp.AddComponent<Object_info>();
+                    temp.AddComponent<Vr_Tracker_Object_info>();
 
                     dinamic_objects.Add(go.gameObject);
                 }
             }
             else
             {
-                //objeto estatico
-                //print(go.name.Substring(0, 3) + " is an static object");
-                //para que no me recoja la mano como objeto estatico
+                
                 for (int i = 0; i < noqueridos_nombre_parecido.Count && valido; i++)
                 {
                     if (go.name.Contains(noqueridos_nombre_parecido[i]))
@@ -131,10 +137,10 @@ public class Recopilador_informacion : MonoBehaviour
     internal void borraObjeto(GameObject other)
     {
        var temp = new GameObject();
-        temp.AddComponent<Object_info>();
-        temp.GetComponent<Object_info>().delete(other.GetComponent<Object_info>().name, other.GetComponent<Object_info>().movimientos);
-        temp.gameObject.name = other.GetComponent<Object_info>().name;
-        if (other.GetComponent<Object_info>().life_time > time_life_minimo)
+        temp.AddComponent<Vr_Tracker_Object_info>();
+        temp.GetComponent<Vr_Tracker_Object_info>().delete(other.GetComponent<Vr_Tracker_Object_info>().name, other.GetComponent<Vr_Tracker_Object_info>().movimientos);
+        temp.gameObject.name = other.GetComponent<Vr_Tracker_Object_info>().name;
+        if (other.GetComponent<Vr_Tracker_Object_info>().life_time > time_life_minimo)
         {
             dinamic_objects.Remove(other);
             dinamic_objects_delete.Add(temp);
@@ -142,7 +148,7 @@ public class Recopilador_informacion : MonoBehaviour
         
 
     }
-    public void envia_toda_info()
+    public void send_info(string status)
     {
         if (!visto2)
         {
@@ -152,8 +158,8 @@ public class Recopilador_informacion : MonoBehaviour
             Scene scene = SceneManager.GetActiveScene();
           
             /*j.AddField("devClass", "14139636727181677031");*/
-            j.AddField("state", "won");
-            j.AddField("nivel", "JuegoPrueba1");
+            j.AddField("state", status);
+            j.AddField("nivel", scene.name);
             j.AddField("usuario", PlayerPrefs.GetString("UserName"));
             j.AddField("devClass", PlayerPrefs.GetString("AppCode"));
 
@@ -165,28 +171,62 @@ public class Recopilador_informacion : MonoBehaviour
             for (int i = 0; i < dinamic_objects.Count; i++)
             {
                 all_objects.Add(dinamic_objects[i]);
-                //this.GetComponent<Comunicacion_servidor>().envia_info_servidor(dinamic_objects[i].GetComponent<Object_info>().name, dinamic_objects[i].GetComponent<Object_info>().movimientos);
+                
 
             }
             for (int i = 0; i < dinamic_objects_delete.Count; i++)
             {
                 all_objects.Add(static_objects[i]);
-                //this.GetComponent<Comunicacion_servidor>().envia_info_servidor(dinamic_objects_delete[i].GetComponent<Object_info>().name, dinamic_objects_delete[i].GetComponent<Object_info>().movimientos);
+                
             }
-            //this.GetComponent<Comunicacion_servidor>().envia_info_servidorJson(all_objects);
+           
             int sum_mov = 0;
 
             for (int i = 0; i < all_objects.Count; i++)
             {
-                if(all_objects[i].GetComponent<Object_info>().movimientos != 0)
-                    arr.AddField(all_objects[i].GetComponent<Object_info>().name, all_objects[i].GetComponent<Object_info>().movimientos);
-                sum_mov += all_objects[i].GetComponent<Object_info>().movimientos;
-                //this.GetComponent<Comunicacion_servidor>().envia_info_servidor(dinamic_objects_delete[i].GetComponent<Object_info>().name, dinamic_objects_delete[i].GetComponent<Object_info>().movimientos);
+                if(all_objects[i].GetComponent<Vr_Tracker_Object_info>().movimientos != 0)
+                    arr.AddField(all_objects[i].GetComponent<Vr_Tracker_Object_info>().name, all_objects[i].GetComponent<Vr_Tracker_Object_info>().movimientos);
+                sum_mov += all_objects[i].GetComponent<Vr_Tracker_Object_info>().movimientos;
+                
             }
             j.AddField("movimientos_tot", sum_mov);
             Debug.Log(j.Print());
-            this.GetComponent<Comunicacion_servidor>().envia_info_servidor_Json(j);
+            this.envia_info_servidor_Json(j);
             visto2 = true;
         }
+    }
+
+    internal void envia_info_servidor_Json(JSONObject j)
+    {
+        StartCoroutine(envia_tiempo_objetos(j));
+
+    }
+
+    private IEnumerator envia_tiempo_objetos(JSONObject j)
+    {
+
+
+
+        yield return new WaitForEndOfFrame();
+
+        WWWForm form = new WWWForm();
+        form.AddField("json", j.Print());
+
+        WWW link = new WWW("http://monitorizer.sytes.net:8000/polls/add_session/", form);
+
+
+        yield return link;
+
+
+        if (!string.IsNullOrEmpty(link.error))
+        {
+            print(link.error);
+        }
+        else
+        {
+            print("Finished Uploading Info");
+        }
+       
+
     }
 }

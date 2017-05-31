@@ -25,4 +25,16 @@ public class Gota : MonoBehaviour {
         }
         Destroy(this.gameObject);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "vaso")
+        {
+            other.gameObject.GetComponent<Vaso>().llena();
+        }
+        else if (other.gameObject.tag == "nota")
+        {
+            other.gameObject.GetComponent<Nota_visible_agua>().llena();
+        }
+        Destroy(this.gameObject);
+    }
 }

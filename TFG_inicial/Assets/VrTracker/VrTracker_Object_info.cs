@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Object_info : MonoBehaviour
+public class Vr_Tracker_Object_info : MonoBehaviour
 {
     public string name;
     public int movimientos;
@@ -62,7 +62,7 @@ public class Object_info : MonoBehaviour
             {
 
                 GameObject temp = GameObject.FindGameObjectWithTag("GameController");
-                temp.GetComponent<Recopilador_informacion>().borraObjeto(this.gameObject);
+                temp.GetComponent<Vr_Tracker>().borraObjeto(this.gameObject);
             }
         }
 
