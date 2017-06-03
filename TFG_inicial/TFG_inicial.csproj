@@ -177,6 +177,7 @@
     <Compile Include="Assets\VrTracker\JSON\JSONTemplates.cs" />
     <Compile Include="Assets\VrTracker\JSON\VectorTemplates.cs" />
     <Compile Include="Assets\VrTracker\VrTracker_Object_info.cs" />
+    <Compile Include="Assets\VrTracker\VrTracker_login_Manager.cs" />
     <Compile Include="Assets\VrTracker\Vr_Tracker.cs" />
     <Compile Include="Assets\scripts\Authentication.cs" />
     <Compile Include="Assets\scripts\Final.cs" />

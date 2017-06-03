@@ -16,10 +16,10 @@ public class GameController2 : MonoBehaviour {
 	void Update () {
         time += Time.deltaTime;
         if (win) {
-            this.GetComponent<Vr_Tracker>().send_info("win");
+            this.GetComponent<Vr_Tracker>().send_info("win",Time.time);
         }
         else if (lose) {
-            this.GetComponent<Vr_Tracker>().send_info("lose");
+            this.GetComponent<Vr_Tracker>().send_info("lose", Time.time);
         }
 
 	}
@@ -31,7 +31,7 @@ public class GameController2 : MonoBehaviour {
     void envia_info_de_todos_modos()
     {
         if (!lose && !win) {
-            this.GetComponent<Vr_Tracker>().send_info("disconected");
+            this.GetComponent<Vr_Tracker>().send_info("disconected",Time.time);
         }
         
     }
