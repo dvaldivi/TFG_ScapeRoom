@@ -151,6 +151,11 @@ public class Vr_Tracker : MonoBehaviour
 
 
     }
+    public void sendMoreInfo(string name, int movimiento)
+    {
+        dinamic_objects_delete.Add(new KeyValuePair<string, int>(name, movimiento));
+
+    }
     public void send_info(string status,float time_new)
     {
         if (!visto2)

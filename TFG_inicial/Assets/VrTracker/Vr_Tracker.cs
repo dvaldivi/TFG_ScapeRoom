@@ -141,7 +141,10 @@ public class Vr_Tracker : MonoBehaviour
             n_objetos++;
         }
     }
+    public void sendMoreInfo(string name, int movimiento) {
+        dinamic_objects_delete.Add(new KeyValuePair<string, int>(name,movimiento));
 
+    }
     internal void borraObjeto(GameObject other)
     {
        
